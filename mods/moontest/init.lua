@@ -204,7 +204,7 @@ end)
 
 --main game loop
 minetest.register_globalstep(function(dtime)  
-	minetest.set_timeofday(0)
+    minetest.set_timeofday(0)
     update_oxygen()
     update_hunger()
     update_energy()
