@@ -37,6 +37,7 @@ Eating sound: CC0, https://freesound.org/people/Breviceps/sounds/447916/
 Alien sound: CC0, https://freesound.org/people/JustInvoke/sounds/147017/
 Alien attack sound: CC0, https://freesound.org/people/vmgraw/sounds/257690/
 Alien death sound: CC0, https://freesound.org/people/mrickey13/sounds/515620/
+Research station sound: CC0, https://freesound.org/people/wtermini/sounds/546450/
 
 --Models--
 Reactor model: CC BY-SA 4.0, https://sketchfab.com/3d-models/big-reactor-38f045b46af043a798ca40d96f754e54
