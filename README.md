@@ -67,7 +67,7 @@ If not, you will experience greater fluctuations in power consumption and</br>
 may overload your reactor.</br>
 </br>
 </br>
-<img src="https://i.imgur.com/86vFPBM.png"></br>
+<img src="https://i.imgur.com/yjbRGCg.png"></br>
 This is your <b>coolant system</b>. This prevents the mining drill from overloading the reactor.</br>
 Left click the coolant pump to turn it on or off. Right click the pump to adjust it's speed.</br>
 The coolant system's power consumption is dependent on the pump speed.</br>
