@@ -1,0 +1,56 @@
+--Textures--
+Moon surface texture: CC0, https://tileable.co/terms-and-conditions/
+Duct texture: CC0, https://tileable.co/terms-and-conditions/
+Wall texture: CC0, https://3dtextures.me/about/
+Airlock texture: CC0, https://opengameart.org/content/40-free-metal-textures-from-mtc-sets
+Vent texture: CC0, https://publicdomainvectors.org/en/free-clipart/Metal-ventilation-grill-vector-image/13994.html
+Crate texture: CC0, https://opengameart.org/content/sci-fi-crate-1
+Table and chair textures: CC0, https://ambientcg.com/view?id=Wood067
+Counter texture: CC0, https://ambientcg.com/view?id=Marble016
+Sofa texture: CC0, https://ambientcg.com/view?id=Fabric045
+Motor texture: CC0, https://publicdomainvectors.org/en/free-clipart/Electrical-motor/56259.html
+
+The hovercraft fan,refridgerator and cabinet textures were created from photographs of real objects.
+Other textures not listed here were created from scratch using GIMP.
+
+--Sprites--
+Astronaut sprite: CC0, https://opengameart.org/content/astronaut-ideas
+Alien sprite: CC0, https://opengameart.org/content/2d-rpg-enemy-set
+Alien splat: CC0, https://opengameart.org/content/splattexture
+Wrench: CC0, https://publicdomainvectors.org/en/free-clipart/Pipe-wrench-vector-illustration/11183.html
+
+--Menu Assets--
+Menu background image: CC0, https://svs.gsfc.nasa.gov/3895
+Menu moon image: CC0, https://www.publicdomainpictures.net/en/view-image.php?image=44955&picture=full-moon-at-midnight-close-up
+Icon: CC0, https://photojournal.jpl.nasa.gov/catalog/PIA14021
+
+--Sounds--
+Airlock sound: CC0, https://freesound.org/people/Paul368/sounds/264063/
+Oxygen sound: CC0, https://freesound.org/people/davidlay1/sounds/416080/
+HVAC sound: CC0, https://freesound.org/people/raygrote/sounds/189986/
+Drill sound: CC0, https://freesound.org/people/PapercutterJohn/sounds/318203/
+Gravity generator sound: CC0, https://freesound.org/people/ct202/sounds/415478/
+Reactor start/stop sound: CC0, https://freesound.org/people/qubodup/sounds/222372/
+Reactor running sound: https://freesound.org/people/felix.blume/sounds/155834/
+Vending machine sound: CC0, https://freesound.org/people/Emma7073/sounds/250195/
+Eating sound: CC0, https://freesound.org/people/Breviceps/sounds/447916/
+Alien sound: CC0, https://freesound.org/people/JustInvoke/sounds/147017/
+Alien attack sound: CC0, https://freesound.org/people/vmgraw/sounds/257690/
+Alien death sound: CC0, https://freesound.org/people/mrickey13/sounds/515620/
+
+--Models--
+Reactor model: CC BY-SA 4.0, https://sketchfab.com/3d-models/big-reactor-38f045b46af043a798ca40d96f754e54
+Gravity generator model: CC BY-SA 4.0, https://sketchfab.com/3d-models/reactor-core-c1411e8423274f92bde84a8e92544397
+Coolant tank model: CC BY-SA 4.0, https://sketchfab.com/3d-models/scifi-water-tank-ad06ee30b8784201bb6509ec77edfcac
+Drill model: CC BY-SA 4.0, https://sketchfab.com/3d-models/driller-cc521221251a4c87b0cb429f98de882c
+HVAC model: CC BY-SA 4.0, https://sketchfab.com/3d-models/hvac-unit-0bf1acaa6f1d4a9bb38cfc91fd115f9c
+Oxygen generator model: CC BY-SA 4.0, https://sketchfab.com/3d-models/apparatus02-c00e97d2f9454840a96d8adcae22738f
+Console model: CC BY-SA 4.0, https://sketchfab.com/3d-models/control-painel-c05341af291b49ef9cfce8e9fbe413f8
+Research station model: CC BY-SA 4.0, https://sketchfab.com/3d-models/kyecorp-console-f609887785fc497e9f0443fb7b276b81
+Toilet model: CC BY 4.0, https://sketchfab.com/3d-models/toilet-868beb5a0e6840d7a1d647a42a5e5a8c
+
+The hovercraft, coolant pump, pipes, bunk beds, refridgerator, light fixtures, sink and shower meshes were all created by Droog71 and are licensed CC0.
+
+--Code--
+All code was written by Droog71 and is licensed AGPLv3
+Mob code is based on this repo https://github.com/CasimirKaPazi/mobapi
