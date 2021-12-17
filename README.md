@@ -18,13 +18,13 @@ You must be granted server privileges to use this command, (ie: /grantme server)
 Moontest is playable in both single player and multiplayer game modes.</br>
 </br>
 <h2>Gameplay</h2>
-<img src="https://i.imgur.com/C8vUbjb.png"></br>
+<img src="https://i.imgur.com/C8vUbjb.png">
 This is your <b>nuclear reactor</b>, the power source for your habitat.</br>
 Left click the reactor to turn it on or off. If the reactor is overloaded</br>
 or you turn it off, all of your equipment will have to be manually restarted.</br>
 </br>
 </br>
-<img src="https://i.imgur.com/Nhk7dFc.png"></br>
+<img src="https://i.imgur.com/Nhk7dFc.png">
 This is your <b>gravity generator</b>. Without it, other machines become unstable.</br>
 Left click the generator to turn it on or off. Right click to adjust the intensity.</br>
 The gravity gravity generator's power consumption is dependent on the intensity.</br>
@@ -42,7 +42,7 @@ The formula used to calculate gravity's effect on machine stability is below.</b
 <b>if math.random(0, 100) > stability then something_fails() end</b> <i>--failures occur</i></br>
 </br>
 </br>
-<img src="https://i.imgur.com/DKEuwe0.png"></br>
+<img src="https://i.imgur.com/DKEuwe0.png">
 This is your <b>oxygen generator</b>. Without it, you cannot survive. Left click the</br>
 generator to turn it on or off. Right click the generator to adjust it's output.</br>
 The oxygen generator's power consumption is dependent on it's output.</br>
@@ -50,7 +50,7 @@ Lower values allow you to divert power elsewhere. Higher values provide more saf
 Extremely high oxygen output settings can be dangerous.</br>
 </br>
 </br>
-<img src="https://i.imgur.com/w9zg6Wa.png"></br>
+<img src="https://i.imgur.com/w9zg6Wa.png">
 This is your <b>hvac system</b>. Without it, you cannot survive. Left click the</br>
 box on top to turn it on or off. Right click the box to adjust the thermostat.</br>
 The hvac system's power consumption is dependent on the thermostat setting.</br>
@@ -58,7 +58,7 @@ Lower values allow you to divert power elsewhere. Higher values provide more saf
 Extremely high thermostat settings can be dangerous.</br>
 </br>
 </br>
-<img src="https://i.imgur.com/86vFPBM.png"></br>
+<img src="https://i.imgur.com/86vFPBM.png">
 This is your <b>mining drill</b>; your primary source of passive income.</br>
 Left click the drill to turn it on or off. Right click to adjust it's speed.</br>
 The drill's power consumption is dependent on the speed setting. Be careful</br>
@@ -67,7 +67,7 @@ If not, you will experience greater fluctuations in power consumption and</br>
 may overload your reactor.</br>
 </br>
 </br>
-<img src="https://i.imgur.com/yjbRGCg.png"></br>
+<img src="https://i.imgur.com/yjbRGCg.png">
 This is your <b>coolant system</b>. This prevents the mining drill from overloading the reactor.</br>
 Left click the coolant pump to turn it on or off. Right click the pump to adjust it's speed.</br>
 The coolant system's power consumption is dependent on the pump speed.</br>
@@ -83,21 +83,21 @@ The formula used to calculate the pump's effect on the drill is below.</br>
 <b>money = money + digging</b> <i>--the amount of money earned from the ore</i></br>
 </br>
 </br>
-<img src="https://i.imgur.com/CyTmGYz.png"></br>
+<img src="https://i.imgur.com/CyTmGYz.png">
 This is your <b>space food vending machine</b>. Without it, you cannot survive.</br>
 Restocking fees are a part of your regular expenses. Left click to buy food.</br>
 Left click with the food in your hand to eat it. Space food replenishes your</br>
 hunger if you are hungry and heals you if you are full.</br>
 </br>
 </br>
-<img src="https://i.imgur.com/lyr1Sxg.png"></br>
+<img src="https://i.imgur.com/lyr1Sxg.png">
 These are your <b>sleeping quarters</b>. Without sleep, you will eventually die.</br>
 Keep an eye on your energy level and when you need to sleep, left click the</br>
 middle of the bottom bunk on one of the bunk beds. You will sleep until your</br>
 energy is full then you will be moved to the lobby of the space habitat.</br>
 </br>
 </br>
-<img src="https://i.imgur.com/mo5QWX0.png"></br>
+<img src="https://i.imgur.com/mo5QWX0.png">
 This is your <b>research station</b>. Here, you can conduct research on organic matter</br>
 'harvested' on the moon's surface. Organic matter is worth $10 each early in the game.</br>
 This value increase each time you process research data. The limit is $50.</br>
