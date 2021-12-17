@@ -36,12 +36,12 @@ minetest.register_entity("moontest:alien", alien_definition)
 
 --disables creative mode and invulnerability
 minetest.register_on_prejoinplayer(function(pname)
-	if minetest.settings:get_bool("creative_mode") == true then
-		return "This game does not support creative mode."
-	end
-    if minetest.settings:get_bool("enable_damage") == false then
-		return "Damage must be enabled to play this game."
-	end
+    if minetest.settings:get_bool("creative_mode") == true then
+        return "This game does not support creative mode."
+    end
+        if minetest.settings:get_bool("enable_damage") == false then
+        return "Damage must be enabled to play this game."
+    end
 end)
 
 --sets up the player character and loads the world
@@ -177,8 +177,7 @@ function load_world()
        unlimited = tonumber(loaded_unlimited) 
     end
     
-    io.close(file)    
-    print("Loaded money: " .. loaded_money)  
+    io.close(file)
 end
 
 --prevents cheating by exiting to the menu to avoid payments
@@ -257,7 +256,7 @@ end)
 
 --saves game data to file
 function save_game()
-   local save_path = minetest.get_worldpath() .. DIR_DELIM .. "moontest_save.txt"
+    local save_path = minetest.get_worldpath() .. DIR_DELIM .. "moontest_save.txt"
     minetest.safe_file_write(save_path, money .. "}"
         .. thermostat .. "}"
         .. oxygen_output .. "}"
@@ -368,7 +367,7 @@ end
 
 --converts the given boolean variable to a number
 function bool_to_number(value)
-  return value and 1 or 0
+    return value and 1 or 0
 end
 
 --converts the given boolean variable to text for the HUD
