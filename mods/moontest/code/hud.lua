@@ -458,7 +458,7 @@ function update_money_hud()
     end
 end
 
---updates money info on the HUD for all players
+--updates messages on the HUD for all players
 function update_message_hud()
     for name, id in pairs(message_hud_ids) do
         local player = minetest.get_player_by_name(name)
