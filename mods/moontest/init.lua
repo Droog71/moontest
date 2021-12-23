@@ -1,15 +1,17 @@
 --[[
     Moon Habitat Simulator
-    Version: 1
+    Version: 1.01
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 money = 1000
 progress = 0.3
 unlimited = 0
-game_over = false
 game_over_timer = 0
+game_over = false
 success = false
+local loaded = false
+local loading_timer = 0
 local expense_timer = 0
 local save_timer = 0
 
@@ -61,17 +63,17 @@ minetest.register_on_joinplayer(function(player)
             collisionbox = {-0.49, 0, -0.49, 0.49, 2, 0.49 },
             initial_sprite_basepos = {x = 0, y = 0}
         })
-        if habitat_built == false then
-            if minetest.get_gametime() < 10 then
-                player:set_pos(vector.new(0, 20, 0))
-                minetest.after(10, function()         
-                    build_habitat()
-                    player:set_pos(vector.new(0, 2, 5))
-                    habitat_built = true	
-                end)
-            else
-                load_world()
-            end
+        if not save_exists() then
+        	local load_time = first_run() and 20 or 10
+            minetest.after(load_time, function()
+                build_habitat()
+                player:set_pos(vector.new(0, 2, 5))
+                habitat_built = true
+            end)
+        elseif habitat_built == false then
+            load_world()
+            player:set_pos(vector.new(0, 2, 5))
+            habitat_built = true
         end
     end
 end)
@@ -140,44 +142,54 @@ function load_world()
     if loaded_money then
         money = tonumber(loaded_money)
     end
-    
     if loaded_thermostat then
         set_thermostat(tonumber(loaded_thermostat))
     end
-    
     if loaded_oxygen_output then
         set_oxygen_output(tonumber(loaded_oxygen_output))
     end
-    
     if loaded_drill_speed then
         set_drill_speed(tonumber(loaded_drill_speed))
     end
-    
     if loaded_pump_speed then
        set_pump_speed(tonumber(loaded_pump_speed)) 
     end
-    
     if loaded_gravity then
        set_gravity(tonumber(loaded_gravity)) 
     end
-    
     if loaded_progress then
        progress = tonumber(loaded_progress)
     end
-    
     if loaded_research_progress then
        research_progress = tonumber(loaded_research_progress) 
     end
-    
     if loaded_alien_count then
        alien_count = tonumber(loaded_alien_count) 
     end
-    
     if loaded_unlimited then
        unlimited = tonumber(loaded_unlimited) 
     end
     
     io.close(file)
+end
+
+--returns true if the file exists
+function save_exists()
+    local file = io.open(minetest.get_worldpath() .. DIR_DELIM .. "moontest_save.txt", "r")
+    if file then
+        io.close(file)
+        return true 
+    end
+    return false
+end
+
+--returns true on first run to increase loading time while media files are cached
+function first_run()
+    if minetest.settings:get_bool("first_run") then
+        return false 
+    end
+    minetest.settings:set_bool("first_run", true)
+    return true
 end
 
 --prevents cheating by exiting to the menu to avoid payments
@@ -205,51 +217,67 @@ end)
 --main game loop
 minetest.register_globalstep(function(dtime)  
     minetest.set_timeofday(0)
-    update_oxygen()
-    update_hunger()
-    update_energy()
-    update_climate()
-    update_machines()
-    update_simulation()
-    update_shared_hud()
-     
-    if minetest.get_gametime() > 10 then
-        spawn_aliens()
-    end
-        
-    expense_timer = expense_timer + 1
-    if expense_timer >= 1000 then
-        money = money - math.floor(2000 * progress)
-        update_money_hud()
-        add_hud_message("Expenses paid: " .. "$" .. math.floor(2000 * progress))    
-        expense_timer = 0
-        if progress < 1 then
-            progress = progress + 0.01
-            add_hud_message("Expenses increased to: " .. "$" .. math.floor(2000 * progress))
-        end
-    end
-        
-    save_timer = save_timer + 1
-    if save_timer > 100 then
-        save_game()
-    end
-        
-    if money >= 30000 and unlimited == 0 then
-        success = true
-        game_over = true
-    end
-        
-    if money <= -10000 and unlimited == 0 then
-        success = false
-        game_over = true
-    end
     
-    if game_over == true then
-        game_over_timer = game_over_timer + 1
-        if game_over_timer >= 200 then
-            restart_game()
-            reset_game_over_hud()
-            game_over_timer = 0
+    if habitat_built == false then
+        for _,player in pairs(minetest.get_connected_players()) do
+            player:set_pos(vector.new(0, 10, 0))
+            player:set_physics_override({gravity = 0})
+        end
+        
+        loading_timer = loading_timer + 1
+        if loading_timer >= 100 then
+            add_hud_message("Preparing the world, please wait...")
+            update_shared_hud()
+            loading_timer = 0
+        end
+    else
+    	if loaded == false then
+    		add_hud_message("Game started.")
+    		loaded = true
+    	end
+        update_oxygen()
+        update_hunger()
+        update_energy()
+        update_climate()
+        update_machines()
+        update_simulation()
+        update_shared_hud()
+        spawn_aliens()
+        
+        expense_timer = expense_timer + 1
+        if expense_timer >= 1000 then
+            money = money - math.floor(2000 * progress)
+            update_money_hud()
+            add_hud_message("Expenses paid: " .. "$" .. math.floor(2000 * progress))    
+            expense_timer = 0
+            if progress < 1 then
+                progress = progress + 0.01
+                add_hud_message("Expenses increased to: " .. "$" .. math.floor(2000 * progress))
+            end
+        end
+            
+        save_timer = save_timer + 1
+        if save_timer > 100 then
+            save_game()
+        end
+            
+        if money >= 30000 and unlimited == 0 then
+            success = true
+            game_over = true
+        end
+            
+        if money <= -10000 and unlimited == 0 then
+            success = false
+            game_over = true
+        end
+        
+        if game_over == true then
+            game_over_timer = game_over_timer + 1
+            if game_over_timer >= 200 then
+                restart_game()
+                reset_game_over_hud()
+                game_over_timer = 0
+            end
         end
     end
 end)
@@ -257,7 +285,8 @@ end)
 --saves game data to file
 function save_game()
     local save_path = minetest.get_worldpath() .. DIR_DELIM .. "moontest_save.txt"
-    minetest.safe_file_write(save_path, money .. "}"
+    minetest.safe_file_write(
+        save_path, money .. "}"
         .. thermostat .. "}"
         .. oxygen_output .. "}"
         .. drill_speed .. "}"
@@ -266,7 +295,8 @@ function save_game()
         .. progress .. "}"
         .. research_progress .. "}"
         .. alien_count .. "}"
-        .. unlimited)
+        .. unlimited
+    )
 end
 
 --restarts the game
@@ -302,26 +332,24 @@ end
 
 --removes the success and failure conditions
 minetest.register_chatcommand("unlimited", {
-	privs = {
-      server = true
-	},
-	func = function(name, param)
-      if param then
-          local input = tonumber(param)
-          if input then
-              if input == 0 or input == 1 then
-                  unlimited = input
-                  return true, "Endless game = " .. unlimited
-              else
-                  return true, "Usage: '/unlimited 0' or '/unlimited 1'"
-              end
-          else
-              return true, "Usage: '/unlimited 0' or '/unlimited 1'"
-          end
-      else
-          return true, "Usage: '/unlimited 0' or '/unlimited 1'"
-      end
-	end
+    privs = {server = true},
+    func = function(name, param)
+        if param then
+            local input = tonumber(param)
+            if input then
+                if input == 0 or input == 1 then
+                    unlimited = input
+                    return true, "Endless game = " .. unlimited
+                else
+                    return true, "Usage: '/unlimited 0' or '/unlimited 1'"
+                end
+            else
+                return true, "Usage: '/unlimited 0' or '/unlimited 1'"
+            end
+        else
+            return true, "Usage: '/unlimited 0' or '/unlimited 1'"
+        end
+    end
 })
 
 --handles player damage and death
@@ -330,7 +358,7 @@ function hurt_player(name)
     player:set_hp(player:get_hp() - 1)
 end
 
---empties the player's inventory
+--empties the inventory
 function empty_inventory(player)
     local items = {ItemStack("moontest:splat"), ItemStack("moontest:space_food")}
     local inventories = player:get_inventory():get_lists()
@@ -372,10 +400,7 @@ end
 
 --converts the given boolean variable to text for the HUD
 function bool_to_on_off(value)
-    if value then
-        return "ON"
-    end
-    return "OFF"
+    return value and "ON" or "OFF"
 end
 
 --converts the given boolean variable to text for the HUD

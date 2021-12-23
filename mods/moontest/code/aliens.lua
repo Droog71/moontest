@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1
+    Version: 1.01
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -137,14 +137,14 @@ end
 
 --simulates gravity
 function apply_gravity(self)
-	if self.object:get_velocity().y > 0.1 then
-      local yaw = self.object:get_yaw()
-      local x = math.sin(yaw) * -2
-      local z = math.cos(yaw) * 2
-      self.object:set_acceleration({x=x, y=-10, z=z})
-	else
-      self.object:set_acceleration({x=0, y=-10, z=0})
-	end
+    if self.object:get_velocity().y > 0.1 then
+        local yaw = self.object:get_yaw()
+        local x = math.sin(yaw) * -2
+        local z = math.cos(yaw) * 2
+        self.object:set_acceleration({x=x, y=-10, z=z})
+    else
+        self.object:set_acceleration({x=0, y=-10, z=0})
+    end
 end
 
 --finds a player to follow and attack

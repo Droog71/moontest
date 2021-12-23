@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1
+    Version: 1.01
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -16,42 +16,42 @@ end)
 
 --defines the space food item and on_use function
 minetest.register_craftitem("moontest:space_food", {
-	description = "Freeze dried food paste.",
-	inventory_image = "space_food.png",
-	on_use = function(itemstack, user, pointed_thing)
-      local name = user:get_player_name()
-      if is_sleeping(name) == false then
-          if hunger_levels[name] <= 99 and itemstack:take_item() ~= nil then
-              local hunger = 100 - hunger_levels[name]
-              if hunger <= 10 then
-                  hunger_levels[name] = hunger_levels[name] + hunger
-              else
-                  hunger_levels[name] = hunger_levels[name] + 10
-              end		  
-              minetest.sound_play('eat', {
-                      pos = user:get_pos(),
-                      max_hear_distance = 16,
-                      gain = 0.5
-                  })
-              update_hunger_hud(name)
-              return itemstack
-          elseif user:get_hp() <= 99 and itemstack:take_item() ~= nil then
-              local health = 100 - user:get_hp()
-              if health <= 10 then               
-                  user:set_hp(user:get_hp() + health)    
-              else
-                  user:set_hp(user:get_hp() + 10)                      
-              end 
-              minetest.sound_play('eat', {
-                      pos = user:get_pos(),
-                      max_hear_distance = 16,
-                      gain = 0.5
-                  })
-              update_hunger_hud(name)
-              return itemstack
-          end
-      end
-	end
+    description = "Freeze dried food paste.",
+    inventory_image = "space_food.png",
+    on_use = function(itemstack, user, pointed_thing)
+        local name = user:get_player_name()
+        if is_sleeping(name) == false then
+            if hunger_levels[name] <= 99 and itemstack:take_item() ~= nil then
+                local hunger = 100 - hunger_levels[name]
+                if hunger <= 10 then
+                    hunger_levels[name] = hunger_levels[name] + hunger
+                else
+                    hunger_levels[name] = hunger_levels[name] + 10
+                end		  
+                minetest.sound_play('eat', {
+                        pos = user:get_pos(),
+                        max_hear_distance = 16,
+                        gain = 0.5
+                    })
+                update_hunger_hud(name)
+                return itemstack
+            elseif user:get_hp() <= 99 and itemstack:take_item() ~= nil then
+                local health = 100 - user:get_hp()
+                if health <= 10 then               
+                    user:set_hp(user:get_hp() + health)    
+                else
+                    user:set_hp(user:get_hp() + 10)                      
+                end 
+                minetest.sound_play('eat', {
+                        pos = user:get_pos(),
+                        max_hear_distance = 16,
+                        gain = 0.5
+                    })
+                update_hunger_hud(name)
+                return itemstack
+            end
+        end
+    end
 })
 
 --manages hunger for all players
