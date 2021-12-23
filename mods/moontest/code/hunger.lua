@@ -40,7 +40,7 @@ minetest.register_craftitem("moontest:space_food", {
                 if health <= 10 then               
                     user:set_hp(user:get_hp() + health)    
                 else
-                    user:set_hp(user:get_hp() + 10)                      
+                    user:set_hp(user:get_hp() + 10)
                 end 
                 minetest.sound_play('eat', {
                         pos = user:get_pos(),
@@ -61,7 +61,7 @@ function update_hunger()
         for name, hunger_level in pairs(hunger_levels) do
             local player = minetest.get_player_by_name(name)
             if hunger_levels[name] > 0 and player:get_hp() > 0 then
-                hunger_levels[name] = hunger_levels[name] - 1                
+                hunger_levels[name] = hunger_levels[name] - 1
                 update_hunger_hud(name)
             else
                 if minetest.get_player_by_name(name):get_hp() > 0 then
