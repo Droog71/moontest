@@ -64,10 +64,6 @@ minetest.register_on_joinplayer(function(player)
             collisionbox = {-0.49, 0, -0.49, 0.49, 2, 0.49 },
             initial_sprite_basepos = {x = 0, y = 0}
         })
-        local item = ItemStack("screwdriver2:screwdriver")
-        if not player:get_inventory():contains_item("main", item) then
-            player:get_inventory():add_item("main", item)
-        end
         skybox.set(player, 1)
         if not save_exists() then
         	local load_time = first_run() and 20 or 10
