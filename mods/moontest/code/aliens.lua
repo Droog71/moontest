@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -11,12 +11,12 @@ local spawn_timer = 0
 --spawns aliens
 function spawn_aliens()
     spawn_timer = spawn_timer + 1
-    if spawn_timer >= 500 - (450 * progress) then
+    if spawn_timer >= 500 - (450 * aggro) then
         for x = -30,30,1 do
             for z = 26,46,1 do
                 if z > 33 then
                     if x < -10 or x > 10 then
-                        if alien_count < (20 * (progress - 0.2)) then
+                        if alien_count < (20 * (aggro - 0.2)) then
                             local chance = math.random(1,1000)
                             if chance >= 999 and minetest.get_node(vector.new(x,1,z)).name == "air" then
                                 minetest.add_entity(vector.new(x,1,z), "moontest:alien")                               
@@ -25,7 +25,7 @@ function spawn_aliens()
                         end
                     end
                 else
-                    if alien_count < (20 * (progress - 0.2)) then
+                    if alien_count < (20 * (aggro - 0.2)) then
                         local chance = math.random(1,1000)
                         if chance >= 999 and minetest.get_node(vector.new(x,1,z)).name == "air" then
                             minetest.add_entity(vector.new(x,1,z), "moontest:alien")
@@ -64,6 +64,20 @@ alien_definition = {
         minetest.after(0.1,function()
             local item = ItemStack("moontest:splat")
             hitter:get_inventory():add_item("main", item)
+            local list = hitter:get_inventory():get_list("main")
+            for index_1,stack_1 in pairs(list) do
+                local current = hitter:get_inventory():get_stack("main", index_1):get_name()
+                if current == "moontest:splat" and index_1 < 9 then
+                    for index_2,stack_2 in pairs(list) do
+                        if stack_2:is_empty() and index_2 > 8 then
+                            local empty = ItemStack("")
+                            hitter:get_inventory():set_stack("main", index_1, empty)
+                            hitter:get_inventory():set_stack("main", index_2, stack_1)
+                            break
+                        end
+                    end
+                end
+            end
             self.object:remove()
             alien_count = alien_count - 1
         end)

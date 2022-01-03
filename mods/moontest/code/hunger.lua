@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -57,7 +57,7 @@ minetest.register_craftitem("moontest:space_food", {
 --manages hunger for all players
 function update_hunger()
     hunger_timer = hunger_timer + 1
-    if hunger_timer >= 100 then
+    if hunger_timer >= 200 then
         for name, hunger_level in pairs(hunger_levels) do
             local player = minetest.get_player_by_name(name)
             if hunger_levels[name] > 0 and player:get_hp() > 0 then
@@ -77,6 +77,20 @@ end
 function buy_space_food(buyer)
     local item = ItemStack("moontest:space_food")
     buyer:get_inventory():add_item("main", item)
+    local list = buyer:get_inventory():get_list("main")
+    for index_1,stack_1 in pairs(list) do
+        local current = buyer:get_inventory():get_stack("main", index_1):get_name()
+        if current == "moontest:space_food" and index_1 < 9 then
+            for index_2,stack_2 in pairs(list) do
+                if stack_2:is_empty() and index_2 > 8 then
+                    local empty = ItemStack("")
+                    buyer:get_inventory():set_stack("main", index_1, empty)
+                    buyer:get_inventory():set_stack("main", index_2, stack_1)
+                    break
+                end
+            end
+        end
+    end
     money = money - 10
     minetest.sound_play('vending', {
         pos = food_vending_bottom_pos,

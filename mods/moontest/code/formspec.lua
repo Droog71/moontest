@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -79,33 +79,99 @@ local text_list = {"\n\nYou are a prospector on a newly discovered moon.\n" ..
     "This value increase each time you process research data. The limit is $50.\n" ..
     "To conduct research, left click the research station while holding the organic matter."
 }
+
 local index = 1
 local text = text_list[1]
 local image = "readme__" .. index .. ".png"
+local background = "form_bg.png"
+local border = "form_border.png"
+local computer_drill = "computer_drill.png"
+local computer_gravity = "computer_gravity.png"
+local red = "red.png"
+local green = "green.png"
+local blue = "blue.png"
 
 --defines the inventory formspec
-local function inventory_formspec(player)
+function inventory_formspec(player)
     local formspec = {
         "size[8,7.5]",
-        "bgcolor[#252525;false]",
+        "bgcolor[#2d2d2d;false]",
         "list[current_player;main;0,3.5;8,4;]",
-        "button[3,0.9;2,0.5;Help;Help]"
+        "button[3,0.9;2,0.5;Help;Help]",
+        "button[3,1.9;2,0.5;Shop;Shop]"
     }
     return formspec
 end
 
 --defines the help formspec
-local function help_formspec(player)
+function help_formspec(player)
     local formspec = {
         "size[30,22]",
-        "bgcolor[#252525;false]",
+        "bgcolor[#2d2d2d;false]",
+        "image[-1,-1;40,28;"..border.."]",
         "image[5.5,0.5;24,13.5;"..image.."]",
         "label[9,12;"..text.."]",
-        "button[12,18;3,0.75;<-;<-]",
-        "button[16,18;3,0.75;->;->]",
-        "button[14,20;3,0.75;Inventory;Inventory]"
+        "button[11.5,18;3,0.75;<-;<-]",
+        "button[15.5,18;3,0.75;->;->]",
+        "button[13.5,20;3,0.75;Back;Back]"
     }
     return formspec
+end
+
+--defines the sleep formspec
+function sleep_formspec(player)
+    local formspec = {
+        "size[2,0.5]",
+        "bgcolor[#2d2d2d;false]",
+        "button[0,0.1;2,0.5;wakeup;Wake Up]"
+    }
+    return formspec
+end
+
+--defines the computer formspec
+function computer_formspec()
+    local drill_active = bool_to_number(drill_on())
+    local gravity_active = bool_to_number(gravity_on())
+    local on_formspec = {
+        "size[30,22]",
+        "bgcolor[#2d2d2d;false]",
+        "image[-1,-1;40,28;"..background.."]",
+        "label[6,1;Drill]",
+        "image[4.25,2;5.51,6.61;"..computer_drill.."]",
+        "label[3,9.15;Speed: ]",
+        "label[3,11.15;Resistance: ]",
+        "label[3,13.15;Cooling: ]",
+        "label[3,15.15;Production: ]",
+        "label[3,17.15;Electrical load: ]",
+        "image[6,9;" .. drill_active * drill_speed * 0.01 .. ",1;"..green.."]",
+        "image[6,11;" .. drill_resistance * 0.005 .. ",1;"..red.."]",
+        "image[6,13;" .. drill_cooling * 0.005 .. ",1;"..blue.."]",
+        "image[6,15;" .. drill_digging * 0.005 .. ",1;"..green.."]",
+        "image[6,17;" .. drill_power * 0.01 .. ",1;"..red.."]",
+        "label[20.65,1;Gravity Generator]",
+        "image[20.25,2;4.824,6.633;"..computer_gravity.."]",
+        "label[19,9.15;Intensity: ]",
+        "image[22,9;" .. gravity_active * generated_gravity * 0.05 .. ",1;"..green.."]",
+        "image[22,11;" .. stability * 0.05 .. ",1;"..blue.."]",
+        "label[19,11.15;Habitat stability: ]",
+        "label[13.5,20;Press escape to exit.]",
+    }
+      local off_formspec = {
+        "size[30,22]",
+        "bgcolor[#2d2d2d;false]",
+        "label[14,19.9;Computer has lost power.]",
+        "label[14,20;Press escape to exit.]",
+    }
+    if power_on() then 
+        return on_formspec
+    end
+    return off_formspec
+end
+
+--updates the computer formspec
+function update_computer_formspec()
+    local formspec = table.concat(computer_formspec())
+    minetest.get_meta(computer_pos):set_string("formspec", formspec)
 end
 
 --sets the inventory formspec
@@ -116,34 +182,47 @@ end)
 
 --handles clicked buttons
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-    if formname ~= "" then return end
-    for key, val in pairs(fields) do
-        if key == "Help" then
-            local formspec = help_formspec(player)
-            player:set_inventory_formspec(table.concat(formspec, ""))
-        elseif key == "Inventory" then
-            local formspec = inventory_formspec(player)
-            player:set_inventory_formspec(table.concat(formspec, ""))
-        elseif key == "->" then
-            if index < 12 then
-                  index = index + 1
-            else
-                index = 1
+    local name = player:get_player_name()
+    if formname == "" then
+        for key, val in pairs(fields) do
+            if key == "Help" then
+                local formspec = help_formspec(player)
+                player:set_inventory_formspec(table.concat(formspec, ""))
+            elseif key == "Shop" then
+                local formspec = shop_formspec(player)
+                player:set_inventory_formspec(table.concat(formspec, ""))
+            elseif key == "Back" then
+                local formspec = inventory_formspec(player)
+                player:set_inventory_formspec(table.concat(formspec, ""))
+            elseif key == "->" then
+                if index < 12 then
+                      index = index + 1
+                else
+                    index = 1
+                end
+                text = text_list[index]
+                image = "readme__" .. index .. ".png"
+                local formspec = help_formspec(player)
+                player:set_inventory_formspec(table.concat(formspec, ""))
+            elseif key == "<-" then
+                if index > 1 then
+                      index = index - 1
+                else
+                    index = 12
+                end
+                text = text_list[index]
+                image = "readme__" .. index .. ".png"
+                local formspec = help_formspec(player)
+                player:set_inventory_formspec(table.concat(formspec, ""))
+            elseif key == "wakeup" then
+                wake_up(player, name)
             end
-            text = text_list[index]
-            image = "readme__" .. index .. ".png"
-            local formspec = help_formspec(player)
-            player:set_inventory_formspec(table.concat(formspec, ""))
-        elseif key == "<-" then
-            if index > 1 then
-                  index = index - 1
-            else
-                index = 12
-            end
-            text = text_list[index]
-            image = "readme__" .. index .. ".png"
-            local formspec = help_formspec(player)
-            player:set_inventory_formspec(table.concat(formspec, ""))
         end
-    end    
+    elseif formname == "sleep" then
+        for key, val in pairs(fields) do
+            if key == "wakeup" then
+                wake_up(player, name)
+            end
+        end
+    end
 end)

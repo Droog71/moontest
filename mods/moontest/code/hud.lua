@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -9,7 +9,6 @@ local message_count = 0
 local shared_hud_timer = 0
 local message_list = {}
 hud_bg_ids = {}
-game_over_hud_ids = {}
 money_hud_ids = {}
 hunger_hud_ids = {}
 energy_hud_ids = {}
@@ -120,7 +119,7 @@ minetest.register_on_joinplayer(function(player)
             position = {x = 0, y = 0},
             offset = {x = 150, y = 580},
             scale = {x = 1, y = 1},
-            text = "Power consumption: " .. power_consumption() .. "/1000",
+            text = "Power consumption: " .. power_consumption() .. "/" .. max_power,
             number = 0xFFFFFF
         })
         money_hud_ids[player:get_player_name()] = player:hud_add({
@@ -130,13 +129,6 @@ minetest.register_on_joinplayer(function(player)
             scale = {x = 1, y = 1},
             text = "Money: $" .. money,
             number = 0xFFFFFF
-        })
-        game_over_hud_ids[player:get_player_name()] = player:hud_add({
-            hud_elem_type = "text",
-            position = {x = 0.5, y = 0.5},
-            offset = {x = 0, y = 0},
-            scale = {x = 1.5, y = 1.5},
-            text = ""
         })
         message_bg_hud_ids[player:get_player_name()] = player:hud_add({
             hud_elem_type = "image",
@@ -167,7 +159,6 @@ function update_shared_hud()
         update_drill_hud()
         update_coolant_hud()
         update_money_hud()
-        update_game_over_hud()
         update_message_hud()
         shared_hud_timer = 0
     end
@@ -433,7 +424,7 @@ function update_power_hud()
                 position = {x = 0, y = 0},
                 offset = {x = 150, y = 580},
                 scale = {x = 1, y = 1},
-                text = "Power consumption: " .. power_consumption() .. "/1000",
+                text = "Power consumption: " .. power_consumption() .. "/" .. max_power,
                 number = 0xFFFFFF
             })
         end
@@ -473,50 +464,6 @@ function update_message_hud()
               number = 0xFFFFFF
           })
         end
-    end
-end
-
---displays game over message for all players
-function update_game_over_hud()
-    if game_over == true and success == true then
-        for name, id in pairs(game_over_hud_ids) do
-            local player = minetest.get_player_by_name(name)
-            player:hud_remove(game_over_hud_ids[name])
-            game_over_hud_ids[name] = player:hud_add({
-                hud_elem_type = "image",
-                position = {x = 0.5, y = 0.5},
-                offset = {x = 0, y = 0},
-                scale = {x = 1.5, y = 1.5},
-                text = "success.png"
-            })
-        end
-    elseif game_over == true and success == false then
-        for name, id in pairs(game_over_hud_ids) do
-            local player = minetest.get_player_by_name(name)
-            player:hud_remove(game_over_hud_ids[name])
-            game_over_hud_ids[name] = player:hud_add({
-                hud_elem_type = "image",
-                position = {x = 0.5, y = 0.5},
-                offset = {x = 0, y = 0},
-                scale = {x = 1.5, y = 1.5},
-                text = "failure.png"
-            })
-        end
-    end
-end
-
---removes game over message for all players
-function reset_game_over_hud()
-    for name, id in pairs(game_over_hud_ids) do
-        local player = minetest.get_player_by_name(name)
-        player:hud_remove(game_over_hud_ids[name])
-        game_over_hud_ids[name] = player:hud_add({
-            hud_elem_type = "text",
-            position = {x = 0.5, y = 0.5},
-            offset = {x = 0, y = 0},
-            scale = {x = 1.5, y = 1.5},
-            text = ""
-        })
     end
 end
 

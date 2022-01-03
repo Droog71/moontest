@@ -55,3 +55,44 @@ The hovercraft, coolant pump, pipes, bunk beds, refridgerator, light fixtures, s
 --Code--
 All code was written by Droog71 and is licensed AGPLv3
 Mob code is based on this repo https://github.com/CasimirKaPazi/mobapi
+
+
+Skybox Mod
+----------
+* Code: LGPLv2.1
+
+Copyright (C) 2017 - Auke Kok <sofar@foo-projects.org>
+
+Contributors:	
+    sofar
+    LoneWolfHT
+    auouymous
+    Maverick2797
+
+* Artwork (textures):
+
+Sky: CC0, Droog71
+Planet: CC0, https://opengameart.org/content/planet-0
+
+
+Mesecons
+--------
+LGPLv3
+CC-BY-SA-3.0
+
+https://github.com/minetest-mods/mesecons
+
+Hawk777 	Code for VoxelManip caching
+Jat15 	Various tweaks.
+Jeija 	Main developer! Everything.
+Jordach 	Noteblock sounds.
+khonkhortistan 	Code, recipes, textures.
+Kotolegokot 	Nodeboxes for items.
+minerd247 	Textures.
+Nore/Novatux 	Code.
+RealBadAngel 	Fixes, improvements.
+sfan5 	Code, recipes, textures.
+suzenako 	Piston sounds.
+Uberi/Temperest 	Code, textures, documentation.
+VanessaE 	Code, recipes, textures, design.
+Whiskers75 	Logic gates implementation.

@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -10,13 +10,14 @@ oxygen_failed = false
 hvac_failed = false
 drill_failed = false
 pump_failed = false
+stability = 0
 local simulation_timer = 0
 
 --simulates equipment failures
 function update_simulation()
     simulation_timer = simulation_timer + 1
     if simulation_timer > 100 then
-        local stability = 92
+        stability = 92
         if gravity_on() and generated_gravity > 100 then
             stability = stability - (generated_gravity - 100)
         else

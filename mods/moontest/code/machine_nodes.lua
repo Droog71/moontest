@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -91,7 +91,24 @@ minetest.register_node("moontest:pump_on", {
                 end
             end
         end
-    end
+    end,
+    mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if minetest.get_meta(pump_pos):get_int("mese_on") == 0 then
+                    local mese_heat = minetest.get_meta(pump_pos):get_int("mese_heat")
+                    if mese_heat <= 1 then
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(pump_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(pump_pos):set_int("mese_on", 1)
+                end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(pump_pos):set_int("mese_on", 0)
+            end
+        },
+    },
 })
 
 minetest.register_node("moontest:pump_off", {
@@ -109,20 +126,42 @@ minetest.register_node("moontest:pump_off", {
                 end
             end
         end
-    end
+    end,
+    mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if power_on() and minetest.get_meta(pump_pos):get_int("mese_on") == 0 then
+                    if minetest.get_meta(pump_pos):get_int("mese_heat") <= 1 then
+                        minetest.set_node(pump_pos, {name = "moontest:pump_on"}) 
+                        minetest.get_meta(pump_pos):set_string("formspec",
+                            "size[5,5]"..
+                            "label[1.5,1;Coolant Pump]"..
+                            "field[1.8,3;2,1;Speed;Speed;]") 
+                        local mese_heat = minetest.get_meta(pump_pos):get_int("mese_heat")
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(pump_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(pump_pos):set_int("mese_on", 1)
+                end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(pump_pos):set_int("mese_on", 0)
+            end
+        },
+    },
 })
 
 minetest.register_node("moontest:hvac_on", {
     name = "hvac_on",
     description = "hvac_on",
     tiles = {
-		"hvac_on.png",
-		"hvac_on.png",
-		"hvac_on.png",
-		"hvac_on.png",
-		"hvac_on.png",
-		"vent.png"
-	},
+        "hvac_on.png",
+        "hvac_on.png",
+        "hvac_on.png",
+        "hvac_on.png",
+        "hvac_on.png",
+        "vent.png"
+    },
     on_receive_fields = function(pos, formname, fields, player)
         if fields.Thermostat then
             if tonumber(fields.Thermostat) then
@@ -132,28 +171,67 @@ minetest.register_node("moontest:hvac_on", {
                 end
             end
         end
-    end
+    end,
+    mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if minetest.get_meta(hvac_pos):get_int("mese_on") == 0 then
+                    local mese_heat = minetest.get_meta(hvac_pos):get_int("mese_heat")
+                    if mese_heat <= 1 then
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(hvac_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(hvac_pos):set_int("mese_on", 1)
+                end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(hvac_pos):set_int("mese_on", 0)
+            end
+        },
+    },
 })
 
 minetest.register_node("moontest:hvac_off", {
     name = "hvac_off",
     description = "hvac_off",
     tiles = {
-		"hvac_off.png",
-		"hvac_off.png",
-		"hvac_off.png",
-		"hvac_off.png",
-		"hvac_off.png",
-		"vent.png"
+      "hvac_off.png",
+      "hvac_off.png",
+      "hvac_off.png",
+      "hvac_off.png",
+      "hvac_off.png",
+      "vent.png"
 	},
-    on_receive_fields = function(pos, formname, fields, player)
-        if fields.Thermostat then
-            if tonumber(fields.Thermostat) then
-                if tonumber(fields.Thermostat) > 0 then
-                  set_thermostat(tonumber(fields.Thermostat))
-                  add_hud_message(player:get_player_name() .. " set thermostat to " .. fields.Thermostat)
+  on_receive_fields = function(pos, formname, fields, player)
+      if fields.Thermostat then
+          if tonumber(fields.Thermostat) then
+              if tonumber(fields.Thermostat) > 0 then
+                set_thermostat(tonumber(fields.Thermostat))
+                add_hud_message(player:get_player_name() .. " set thermostat to " .. fields.Thermostat)
+              end
+          end
+      end
+  end,
+  mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if power_on() and minetest.get_meta(hvac_pos):get_int("mese_on") == 0 then
+                    if minetest.get_meta(hvac_pos):get_int("mese_heat") <= 1 then
+                        minetest.set_node(hvac_pos, {name = "moontest:hvac_on"})
+                        minetest.get_meta(hvac_pos):set_string("formspec",
+                            "size[5,5]"..
+                            "label[1.5,1;HVAC System]"..
+                            "field[1.8,3;2,1;Thermostat;Thermostat;]") 
+                        local mese_heat = minetest.get_meta(hvac_pos):get_int("mese_heat")
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(hvac_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(hvac_pos):set_int("mese_on", 1)
                 end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(hvac_pos):set_int("mese_on", 0)
             end
-        end
-    end
+        },
+    },
 })

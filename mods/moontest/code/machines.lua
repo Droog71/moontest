@@ -1,15 +1,20 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 generated_gravity = 100
 drill_speed = 100
 pump_speed = 100
+drill_resistance = 0
+drill_cooling = 0
+drill_digging = 0
+drill_power = 0
+max_power = 600
+total_ore_mined = 0
 local drill_mining_timer = 0
 local drill_power_timer = 0
-local drill_power = 0
 local hvac_sound
 local reactor_sound
 local oxygen_sound
@@ -41,8 +46,10 @@ function update_machines()
             dig()
         else
             drill_power = 0
+            drill_digging = 0
+            drill_resistance = 0
         end
-        if power_consumption() >= 1000 then
+        if power_consumption() >= max_power then
             add_hud_message("Reactor overloaded!")
             reactor_stop()
         end
@@ -57,22 +64,23 @@ end
 
 --determines the amount of ore mined and power consumed with each cycle of the drill
 function dig()
-    local resistance = math.random(drill_speed * 2, drill_speed * 3)
+    drill_resistance = math.random(drill_speed * 2, drill_speed * 3)
     drill_mining_timer = drill_mining_timer + 1
     if drill_mining_timer >= 500 then
-        local mined = drill_speed + resistance
+        local mined = drill_speed + drill_resistance
         money = money + mined
+        total_ore_mined = total_ore_mined + mined
         add_hud_message("Drill mined $" .. mined .. " worth of ore.")
         drill_mining_timer = 0
     end           
     drill_power_timer = drill_power_timer + 1
     if drill_power_timer >= 100 then
-        local digging = drill_speed + resistance
-        local cooling = (bool_to_number(pump_on()) * pump_speed) * 3
-        if cooling > resistance * 0.9 then
-            cooling = resistance * 0.9
+        drill_digging = drill_speed + drill_resistance
+        drill_cooling = (bool_to_number(pump_on()) * pump_speed) * 3
+        if drill_cooling > drill_resistance * 0.9 then
+            drill_cooling = drill_resistance * 0.9
         end
-        drill_power = digging - cooling
+        drill_power = drill_digging - drill_cooling
         drill_power_timer = 0
     end
 end

@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -30,6 +30,14 @@ minetest.register_node("moontest:food_vending_bottom", {
 		"food_vending.png"
 	},
     light_source = 10
+})
+
+minetest.register_node("moontest:computer", {
+    name = "computer",
+    description = "computer",
+    drawtype = 'mesh',
+    mesh = "computer.obj",
+    tiles = {"computer.png"}
 })
 
 minetest.register_node("moontest:airlock", {

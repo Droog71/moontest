@@ -1,23 +1,21 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 money = 1000
-progress = 0.3
-unlimited = 0
-game_over_timer = 0
-game_over = false
-success = false
+aggro = 0.3
 local loaded = false
 local loading_timer = 0
 local expense_timer = 0
 local save_timer = 0
+local computer_timer = 0
 
 minetest.settings:set_bool("menu_clouds", false)
 minetest.settings:set_bool("smooth_lighting", true)
 minetest.register_item(":", { type = "none", wield_image = "hand.png"})
+skybox.add({"Space", "#FFFFFF", 0, { density = 0}})
 
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "nodes.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "habitat.lua")
@@ -28,11 +26,14 @@ dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "machines.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "interaction.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "simulation.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "reactor_booster.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "logic.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "aliens.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "research.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "sprint.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "hud.lua")
 dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "formspec.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "shop_formspec.lua")
 
 minetest.register_entity("moontest:alien", alien_definition)
 
@@ -63,6 +64,11 @@ minetest.register_on_joinplayer(function(player)
             collisionbox = {-0.49, 0, -0.49, 0.49, 2, 0.49 },
             initial_sprite_basepos = {x = 0, y = 0}
         })
+        local item = ItemStack("screwdriver2:screwdriver")
+        if not player:get_inventory():contains_item("main", item) then
+            player:get_inventory():add_item("main", item)
+        end
+        skybox.set(player, 1)
         if not save_exists() then
         	local load_time = first_run() and 20 or 10
             minetest.after(load_time, function()
@@ -87,7 +93,6 @@ minetest.register_on_leaveplayer(function(player)
         temperature_levels[name] = nil
         energy_levels[name] = nil
         hud_bg_ids[name] = nil
-        game_over_hud_ids[name] = nil
         money_hud_ids[name] = nil
         hunger_hud_ids[name] = nil
         energy_hud_ids[name] = nil
@@ -108,7 +113,6 @@ end)
 --resets all player variables on death
 minetest.register_on_dieplayer(function(player)
     local player_name = player:get_player_name()
-    empty_inventory(player)
     oxygen_levels[player_name] = 100
     hunger_levels[player_name] = 100
     temperature_levels[player_name] = 100
@@ -119,63 +123,89 @@ end)
 
 --loads saved game data from file
 function load_world()
-    local save_data = {}
-    local filepath = minetest.get_worldpath()
-    local file = io.open(minetest.get_worldpath() .. DIR_DELIM .. "moontest_save.txt", "r")
-    io.input(file)    
-    
-    for str in string.gmatch(io.read(), "([^".."}".."]+)") do
-        table.insert(save_data, str)
+    local file = io.open(minetest.get_worldpath() .. DIR_DELIM .. "save_data.json", "r") 
+    if file then
+        local data = minetest.parse_json(file:read "*a")
+        if data then
+            if data.money then
+                money = data.money
+            end
+            if data.aggro then
+                aggro = data.aggro
+            end
+            if data.max_power then
+                max_power = data.max_power
+            end
+            if data.total_ore_mined then
+                total_ore_mined = data.total_ore_mined
+            end
+            if data.thermostat then
+                set_thermostat(data.thermostat)
+            end
+            if data.oxygen_output then
+                set_oxygen_output(data.oxygen_output)
+            end
+            if data.drill_speed then
+                set_drill_speed(data.drill_speed)
+            end
+            if data.pump_speed then
+               set_pump_speed(data.pump_speed)
+            end
+            if data.generated_gravity then
+               set_gravity(data.generated_gravity)
+            end
+            if data.research_progress then
+               research_progress = data.research_progress
+            end
+            if data.alien_count then
+               alien_count = data.alien_count
+            end
+            if data.hunger_levels then
+                hunger_levels = data.hunger_levels
+            end
+            if data.oxygen_levels then
+                oxygen_levels = data.oxygen_levels
+            end
+            if data.temperature_levels then
+                temperature_levels = data.temperature_levels
+            end
+            if data.energy_levels then
+                energy_levels = data.energy_levels
+            end
+        else
+            minetest.log("error", "Failed to read save_data.json")
+        end
+        io.close(file)
     end
-    
-    local loaded_money = save_data[1]
-    local loaded_thermostat = save_data[2]
-    local loaded_oxygen_output = save_data[3]
-    local loaded_drill_speed = save_data[4]
-    local loaded_pump_speed = save_data[5]
-    local loaded_gravity = save_data[6]
-    local loaded_progress = save_data[7]
-    local loaded_research_progress = save_data[8]
-    local loaded_alien_count = save_data[9]
-    local loaded_unlimited = save_data[10]
-    
-    if loaded_money then
-        money = tonumber(loaded_money)
-    end
-    if loaded_thermostat then
-        set_thermostat(tonumber(loaded_thermostat))
-    end
-    if loaded_oxygen_output then
-        set_oxygen_output(tonumber(loaded_oxygen_output))
-    end
-    if loaded_drill_speed then
-        set_drill_speed(tonumber(loaded_drill_speed))
-    end
-    if loaded_pump_speed then
-       set_pump_speed(tonumber(loaded_pump_speed)) 
-    end
-    if loaded_gravity then
-       set_gravity(tonumber(loaded_gravity)) 
-    end
-    if loaded_progress then
-       progress = tonumber(loaded_progress)
-    end
-    if loaded_research_progress then
-       research_progress = tonumber(loaded_research_progress) 
-    end
-    if loaded_alien_count then
-       alien_count = tonumber(loaded_alien_count) 
-    end
-    if loaded_unlimited then
-       unlimited = tonumber(loaded_unlimited) 
-    end
-    
-    io.close(file)
+end
+
+--saves game data to file
+function save_game()
+    local save_vars = {
+        money = money,
+        aggro = aggro,
+        max_power = max_power,
+        total_ore_mined = total_ore_mined,
+        thermostat = thermostat,
+        oxygen_output = oxygen_output,
+        drill_speed = drill_speed,
+        pump_speed = pump_speed,
+        generated_gravity = generated_gravity,
+        research_progress = research_progress,
+        alien_count = alien_count,
+        hunger_levels = hunger_levels,
+        oxygen_levels = oxygen_levels,
+        temperature_levels = temperature_levels,
+        energy_levels = energy_levels
+    }
+    local save_data = minetest.write_json(save_vars)
+    local save_path = minetest.get_worldpath() .. DIR_DELIM .. "save_data.json"
+    minetest.safe_file_write(save_path, save_data)
 end
 
 --returns true if the file exists
 function save_exists()
-    local file = io.open(minetest.get_worldpath() .. DIR_DELIM .. "moontest_save.txt", "r")
+    local file = io.open(minetest.get_worldpath() .. DIR_DELIM .. "save_data.json", "r")
     if file then
         io.close(file)
         return true 
@@ -194,7 +224,7 @@ end
 
 --prevents cheating by exiting to the menu to avoid payments
 minetest.register_on_shutdown(function()
-    money = money - math.floor(2000 * progress)
+    money = money - math.floor(total_ore_mined * 0.01)
     save_game()
 end)
 
@@ -215,9 +245,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 end)
 
 --main game loop
-minetest.register_globalstep(function(dtime)  
-    minetest.set_timeofday(0)
-    
+minetest.register_globalstep(function(dtime)   
     if habitat_built == false then
         for _,player in pairs(minetest.get_connected_players()) do
             player:set_pos(vector.new(0, 10, 0))
@@ -246,70 +274,38 @@ minetest.register_globalstep(function(dtime)
         
         expense_timer = expense_timer + 1
         if expense_timer >= 1000 then
-            money = money - math.floor(2000 * progress)
+            money = money - math.floor(total_ore_mined * 0.01)
             update_money_hud()
-            add_hud_message("Expenses paid: " .. "$" .. math.floor(2000 * progress))    
-            expense_timer = 0
-            if progress < 1 then
-                progress = progress + 0.01
-                add_hud_message("Expenses increased to: " .. "$" .. math.floor(2000 * progress))
+            add_hud_message("Expenses paid: " .. "$" .. math.floor(total_ore_mined * 0.01))    
+            add_hud_message("Expenses increased to: " .. "$" .. math.floor(total_ore_mined * 0.01))
+            if aggro < 1 then
+                aggro = aggro + 0.01
             end
+            expense_timer = 0
         end
             
         save_timer = save_timer + 1
-        if save_timer > 100 then
+        if save_timer >= 100 then
             save_game()
+            save_timer = 0
         end
-            
-        if money >= 30000 and unlimited == 0 then
-            success = true
-            game_over = true
-        end
-            
-        if money <= -10000 and unlimited == 0 then
-            success = false
-            game_over = true
-        end
-        
-        if game_over == true then
-            game_over_timer = game_over_timer + 1
-            if game_over_timer >= 200 then
-                restart_game()
-                reset_game_over_hud()
-                game_over_timer = 0
-            end
+           
+        computer_timer = computer_timer + 1
+        if computer_timer >= 20 then
+            update_computer_formspec()
+            computer_timer = 0
         end
     end
 end)
 
---saves game data to file
-function save_game()
-    local save_path = minetest.get_worldpath() .. DIR_DELIM .. "moontest_save.txt"
-    minetest.safe_file_write(
-        save_path, money .. "}"
-        .. thermostat .. "}"
-        .. oxygen_output .. "}"
-        .. drill_speed .. "}"
-        .. pump_speed .. "}"
-        .. generated_gravity .. "}"
-        .. progress .. "}"
-        .. research_progress .. "}"
-        .. alien_count .. "}"
-        .. unlimited
-    )
-end
-
 --restarts the game
 function restart_game()
-    game_over = false
-    success = false
     money = 1000
     thermostat = 100
     oxygen_output = 100
     drill_speed = 100
     pump_speed = 100
     generated_gravity = 100
-    progress = 0.3
     research_progress = 1
     expense_timer = 0
     for index, alien in pairs(aliens) do
@@ -324,51 +320,15 @@ function restart_game()
         hunger_levels[player_name] = 100
         energy_levels[player_name] = 100
         temperature_levels[player_name] = 100
-        empty_inventory(player)
         player:set_hp(20)
         player:set_pos(vector.new(0, 2, 5))
     end
 end
 
---removes the success and failure conditions
-minetest.register_chatcommand("unlimited", {
-    privs = {server = true},
-    func = function(name, param)
-        if param then
-            local input = tonumber(param)
-            if input then
-                if input == 0 or input == 1 then
-                    unlimited = input
-                    return true, "Endless game = " .. unlimited
-                else
-                    return true, "Usage: '/unlimited 0' or '/unlimited 1'"
-                end
-            else
-                return true, "Usage: '/unlimited 0' or '/unlimited 1'"
-            end
-        else
-            return true, "Usage: '/unlimited 0' or '/unlimited 1'"
-        end
-    end
-})
-
 --handles player damage and death
 function hurt_player(name)
     local player = minetest.get_player_by_name(name)
     player:set_hp(player:get_hp() - 1)
-end
-
---empties the inventory
-function empty_inventory(player)
-    local items = {ItemStack("moontest:splat"), ItemStack("moontest:space_food")}
-    local inventories = player:get_inventory():get_lists()
-    for name, list in pairs(inventories) do
-        for index, item in pairs(items) do
-            while player:get_inventory():contains_item(name, items[index]) do
-                player:get_inventory():remove_item(name, items[index])
-            end                 
-        end
-    end  
 end
 
 --returns true if the given player is inside the habitat

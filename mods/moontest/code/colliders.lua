@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -17,6 +17,26 @@ minetest.register_node("moontest:reactor_collider", {
     description = "reactor_collider",
     tiles = {"invisible.png"},
     drawtype = 'airlike',
+    mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if minetest.get_meta(reactor_pos):get_int("mese_on") == 0 then
+                    local mese_heat = minetest.get_meta(reactor_pos):get_int("mese_heat")
+                    if minetest.get_meta(reactor_pos):get_int("mese_heat") <= 1 then
+                        if minetest.get_node(reactor_pos).name == "moontest:reactor_off" then
+                            reactor_start()
+                        end
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(reactor_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(reactor_pos):set_int("mese_on", 1)
+                end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(reactor_pos):set_int("mese_on", 0)
+            end
+        },
+    },
     light_source = 10
 })
 
@@ -35,6 +55,26 @@ minetest.register_node("moontest:gravity_generator_collider", {
             end
         end
     end,
+    mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if minetest.get_meta(gravity_generator_pos):get_int("mese_on") == 0 then
+                    local mese_heat = minetest.get_meta(gravity_generator_pos):get_int("mese_heat")
+                    if power_on() and mese_heat <= 1 then
+                        if minetest.get_node(gravity_generator_pos).name == "moontest:gravity_generator_off" then
+                            minetest.set_node(gravity_generator_pos, {name = "moontest:gravity_generator_on"})
+                        end
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(gravity_generator_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(gravity_generator_pos):set_int("mese_on", 1)
+                end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(gravity_generator_pos):set_int("mese_on", 0)
+            end
+        },
+    },
     light_source = 10
 })
 
@@ -53,6 +93,26 @@ minetest.register_node("moontest:drill_collider", {
             end
         end
     end,
+    mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if minetest.get_meta(drill_pos):get_int("mese_on") == 0 then
+                    local mese_heat = minetest.get_meta(drill_pos):get_int("mese_heat")
+                    if power_on() and mese_heat <= 1 then
+                        if minetest.get_node(drill_pos).name == "moontest:drill_off" then
+                            minetest.set_node(drill_pos, {name = "moontest:drill_on"})
+                        end
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(drill_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(drill_pos):set_int("mese_on", 1)
+                end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(drill_pos):set_int("mese_on", 0)
+            end
+        },
+    },
     light_source = 10
 })
 
@@ -71,5 +131,25 @@ minetest.register_node("moontest:oxygen_generator_collider", {
             end
         end
     end,
+    mesecons = {
+        effector = {
+            action_on = function(pos, node)
+                if minetest.get_meta(oxygen_generator_pos):get_int("mese_on") == 0 then
+                    local mese_heat = minetest.get_meta(oxygen_generator_pos):get_int("mese_heat")
+                    if power_on() and mese_heat <= 1 then
+                        if minetest.get_node(oxygen_generator_pos).name == "moontest:oxygen_generator_off" then
+                            minetest.set_node(oxygen_generator_pos, {name = "moontest:oxygen_generator_on"})
+                        end
+                        mese_heat = mese_heat + 1
+                        minetest.get_meta(oxygen_generator_pos):set_int("mese_heat", mese_heat)
+                    end
+                    minetest.get_meta(oxygen_generator_pos):set_int("mese_on", 1)
+                end
+            end,
+            action_off = function(pos, node)
+                minetest.get_meta(oxygen_generator_pos):set_int("mese_on", 0)
+            end
+        },
+    },
     light_source = 10
 })

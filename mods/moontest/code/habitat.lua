@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.01
+    Version: 1.0.2
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -19,6 +19,7 @@ food_vending_bottom_pos = vector.new(24, 1, -20)
 airlock_controller_pos = vector.new(4, 2, 25)
 airlock_pos = vector.new(0, 2, 25)
 research_station_pos = vector.new(9,1,0)
+computer_pos = vector.new(12,2,-6)
 
 --builds the habitat, called 10 seconds after the world is created
 function build_habitat()
@@ -112,7 +113,9 @@ function build_coolant_system()
     minetest.get_meta(pump_pos):set_string("formspec",
         "size[5,5]"..
         "label[1.5,1;Coolant Pump]"..
-        "field[1.8,3;2,1;Speed;Speed;]") 
+        "field[1.8,3;2,1;Speed;Speed;]")
+    minetest.get_meta(pump_pos):set_int("mese_heat", 0)
+    minetest.get_meta(pump_pos):set_int("mese_on", 0)
 end
 
 --creates the hvac system mesh, colliders and GUI
@@ -131,7 +134,9 @@ function build_hvac()
     minetest.get_meta(hvac_pos):set_string("formspec",
         "size[5,5]"..
         "label[1.5,1;HVAC System]"..
-        "field[1.8,3;2,1;Thermostat;Thermostat;]") 
+        "field[1.8,3;2,1;Thermostat;Thermostat;]")
+    minetest.get_meta(hvac_pos):set_int("mese_heat", 0)
+    minetest.get_meta(hvac_pos):set_int("mese_on", 0)
 end
 
 --creates the oxygen generator mesh, colliders and GUI
@@ -182,4 +187,7 @@ end
 function build_research_station()
     minetest.set_node(research_station_pos, {name = "moontest:research_station"})
     minetest.set_node(vector.new(9,2,0), {name = "moontest:research_panel"}) 
+    minetest.set_node(vector.new(12,1,-6), {name = "moontest:table"})
+    minetest.set_node(computer_pos, {name = "moontest:computer"}) 
+    minetest.get_meta(computer_pos):set_string("formspec",table.concat(computer_formspec()))
 end
