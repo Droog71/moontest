@@ -208,7 +208,6 @@ local function restart_game()
     generated_gravity = 100
     aggro = 0.3
     research_progress = 1
-    expense_timer = 0
     for index, alien in pairs(aliens) do
         alien:remove()
         aliens[index] = nil

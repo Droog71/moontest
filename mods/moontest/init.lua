@@ -6,12 +6,17 @@
 
 money = 1000
 aggro = 0.3
+
 local loaded = false
 local loading_timer = 0
 local expense_timer = 0
 local save_timer = 0
 local computer_timer = 0
 local previous_expense = 0
+
+local enable_fog = minetest.settings:get_bool("enable_fog")
+local menu_clouds = minetest.settings:get_bool("menu_clouds")
+local smooth_lighting = minetest.settings:get_bool("smooth_lighting")
 
 minetest.settings:set_bool("enable_fog", false)
 minetest.settings:set_bool("menu_clouds", false)
@@ -221,6 +226,9 @@ end
 --prevents cheating by exiting to the menu to avoid payments
 minetest.register_on_shutdown(function()
     money = money - math.floor(total_ore_mined * 0.01)
+    minetest.settings:set_bool("enable_fog", enable_fog)
+    minetest.settings:set_bool("menu_clouds", menu_clouds)
+    minetest.settings:set_bool("smooth_lighting", smooth_lighting)
     save_game()
 end)
 
@@ -259,48 +267,48 @@ minetest.register_globalstep(function(dtime)
             add_hud_message("Game started.")
             loaded = true
         end
-            if tutorial_active == false then
-                update_oxygen()
-                update_hunger()
-                update_energy()
-                update_climate()
-                update_machines()
-                update_simulation()
-                update_shared_hud()
-                spawn_aliens()
-            
-                expense_timer = expense_timer + 1
-                if expense_timer >= 1000 then
-                    local expense = math.floor(total_ore_mined * 0.01)
-                    money = money - expense
-                    update_money_hud()
-                    add_hud_message("Expenses paid: " .. "$" .. expense)
-                    if expense > previous_expense then
-                        add_hud_message("Expenses increased to: " .. "$" .. expense)
-                        previous_expense = total_ore_mined * 0.01
-                    end
-                    if aggro < 1 then
-                        aggro = aggro + 0.01
-                    end
-                    expense_timer = 0
+        if tutorial_active == false then
+            update_oxygen()
+            update_hunger()
+            update_energy()
+            update_climate()
+            update_machines()
+            update_simulation()
+            update_shared_hud()
+            spawn_aliens()
+        
+            expense_timer = expense_timer + 1
+            if expense_timer >= 1000 then
+                local expense = math.floor(total_ore_mined * 0.01)
+                money = money - expense
+                update_money_hud()
+                add_hud_message("Expenses paid: " .. "$" .. expense)
+                if expense > previous_expense then
+                    add_hud_message("Expenses increased to: " .. "$" .. expense)
+                    previous_expense = total_ore_mined * 0.01
                 end
-                    
-                save_timer = save_timer + 1
-                if save_timer >= 100 then
-                    save_game()
-                    save_timer = 0
+                if aggro < 1 then
+                    aggro = aggro + 0.01
                 end
-                   
-                computer_timer = computer_timer + 1
-                if computer_timer >= 20 then
-                    update_computer_formspec()
-                    computer_timer = 0
-                end
-            else
-                update_energy()
-                update_shared_hud()
+                expense_timer = 0
             end
-      end
+                
+            save_timer = save_timer + 1
+            if save_timer >= 100 then
+                save_game()
+                save_timer = 0
+            end
+               
+            computer_timer = computer_timer + 1
+            if computer_timer >= 20 then
+                update_computer_formspec()
+                computer_timer = 0
+            end
+        else
+            update_energy()
+            update_shared_hud()
+        end
+    end
 end)
 
 --restarts the game
