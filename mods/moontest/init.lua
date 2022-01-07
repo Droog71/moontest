@@ -270,11 +270,8 @@ minetest.register_globalstep(function(dtime)
         if tutorial_active == false then
             update_oxygen()
             update_hunger()
-            update_energy()
             update_climate()
-            update_machines()
             update_simulation()
-            update_shared_hud()
             spawn_aliens()
         
             expense_timer = expense_timer + 1
@@ -298,45 +295,17 @@ minetest.register_globalstep(function(dtime)
                 save_game()
                 save_timer = 0
             end
-               
-            computer_timer = computer_timer + 1
-            if computer_timer >= 20 then
-                update_computer_formspec()
-                computer_timer = 0
-            end
-        else
-            update_energy()
-            update_shared_hud()
+        end
+        update_energy()
+        update_machines()
+        update_shared_hud()
+        computer_timer = computer_timer + 1
+        if computer_timer >= 20 then
+            update_computer_formspec()
+            computer_timer = 0
         end
     end
 end)
-
---restarts the game
-function restart_game()
-    money = 1000
-    thermostat = 100
-    oxygen_output = 100
-    drill_speed = 100
-    pump_speed = 100
-    generated_gravity = 100
-    research_progress = 1
-    expense_timer = 0
-    for index, alien in pairs(aliens) do
-        alien:remove()
-        aliens[index] = nil
-    end
-    alien_count = 0
-    build_habitat()
-    for _,player in pairs(minetest.get_connected_players()) do
-        local player_name = player:get_player_name()
-        oxygen_levels[player_name] = 100
-        hunger_levels[player_name] = 100
-        energy_levels[player_name] = 100
-        temperature_levels[player_name] = 100
-        player:set_hp(20)
-        player:set_pos(vector.new(0, 2, 5))
-    end
-end
 
 --handles player damage and death
 function hurt_player(name)

@@ -428,7 +428,6 @@ minetest.register_globalstep(function(dtime)
                     end
                 end
                 energy_levels[name] = 75
-                update_gravity(name)
                 check_tutorial_conditions(player)
             end
             tutorial_timer = 0
