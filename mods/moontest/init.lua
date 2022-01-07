@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.2
+    Version: 1.0.3
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -11,29 +11,32 @@ local loading_timer = 0
 local expense_timer = 0
 local save_timer = 0
 local computer_timer = 0
+local previous_expense = 0
 
+minetest.settings:set_bool("enable_fog", false)
 minetest.settings:set_bool("menu_clouds", false)
 minetest.settings:set_bool("smooth_lighting", true)
 minetest.register_item(":", { type = "none", wield_image = "hand.png"})
 skybox.add({"Space", "#FFFFFF", 0, { density = 0}})
 
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "nodes.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "habitat.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "oxygen.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "climate.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "hunger.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "energy.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "machines.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "interaction.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "simulation.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "reactor_booster.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "logic.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "aliens.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "research.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "sprint.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "hud.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "formspec.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "shop_formspec.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "nodes.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "habitat.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "oxygen.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "climate.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "hunger.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "energy.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "machines.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "interaction.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "simulation.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "reactor_booster.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "logic.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "aliens.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "research.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "sprint.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "hud.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "formspec.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "tutorial.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "shop_formspec.lua")
 
 minetest.register_entity("moontest:alien", alien_definition)
 
@@ -65,17 +68,14 @@ minetest.register_on_joinplayer(function(player)
             initial_sprite_basepos = {x = 0, y = 0}
         })
         skybox.set(player, 1)
-        if not save_exists() then
-        	local load_time = first_run() and 20 or 10
+        local load_time = first_run() and 20 or 10
             minetest.after(load_time, function()
                 build_habitat()
                 player:set_pos(vector.new(0, 2, 5))
                 habitat_built = true
             end)
-        elseif habitat_built == false then
+        if save_exists() then
             load_world()
-            player:set_pos(vector.new(0, 2, 5))
-            habitat_built = true
         end
     end
 end)
@@ -211,10 +211,10 @@ end
 
 --returns true on first run to increase loading time while media files are cached
 function first_run()
-    if minetest.settings:get_bool("first_run") then
+    if minetest.settings:get_bool("moontest:first_run") then
         return false 
     end
-    minetest.settings:set_bool("first_run", true)
+    minetest.settings:set_bool("moontest:first_run", true)
     return true
 end
 
@@ -255,43 +255,52 @@ minetest.register_globalstep(function(dtime)
             loading_timer = 0
         end
     else
-    	if loaded == false then
-    		add_hud_message("Game started.")
-    		loaded = true
-    	end
-        update_oxygen()
-        update_hunger()
-        update_energy()
-        update_climate()
-        update_machines()
-        update_simulation()
-        update_shared_hud()
-        spawn_aliens()
-        
-        expense_timer = expense_timer + 1
-        if expense_timer >= 1000 then
-            money = money - math.floor(total_ore_mined * 0.01)
-            update_money_hud()
-            add_hud_message("Expenses paid: " .. "$" .. math.floor(total_ore_mined * 0.01))    
-            add_hud_message("Expenses increased to: " .. "$" .. math.floor(total_ore_mined * 0.01))
-            if aggro < 1 then
-                aggro = aggro + 0.01
-            end
-            expense_timer = 0
+        if loaded == false then
+            add_hud_message("Game started.")
+            loaded = true
         end
+            if tutorial_active == false then
+                update_oxygen()
+                update_hunger()
+                update_energy()
+                update_climate()
+                update_machines()
+                update_simulation()
+                update_shared_hud()
+                spawn_aliens()
             
-        save_timer = save_timer + 1
-        if save_timer >= 100 then
-            save_game()
-            save_timer = 0
-        end
-           
-        computer_timer = computer_timer + 1
-        if computer_timer >= 20 then
-            update_computer_formspec()
-            computer_timer = 0
-        end
-    end
+                expense_timer = expense_timer + 1
+                if expense_timer >= 1000 then
+                    local expense = math.floor(total_ore_mined * 0.01)
+                    money = money - expense
+                    update_money_hud()
+                    add_hud_message("Expenses paid: " .. "$" .. expense)
+                    if expense > previous_expense then
+                        add_hud_message("Expenses increased to: " .. "$" .. expense)
+                        previous_expense = total_ore_mined * 0.01
+                    end
+                    if aggro < 1 then
+                        aggro = aggro + 0.01
+                    end
+                    expense_timer = 0
+                end
+                    
+                save_timer = save_timer + 1
+                if save_timer >= 100 then
+                    save_game()
+                    save_timer = 0
+                end
+                   
+                computer_timer = computer_timer + 1
+                if computer_timer >= 20 then
+                    update_computer_formspec()
+                    computer_timer = 0
+                end
+            else
+                update_energy()
+                update_shared_hud()
+            end
+      end
 end)
 
 --restarts the game

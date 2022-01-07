@@ -2,7 +2,7 @@
 
 mesecon.register_node("mesecons_switch:mesecon_switch", {
 	paramtype2="facedir",
-	description="Switch",
+	description="Switch\n" .. "Used to turn logic circuits on and off.",
 	is_ground_content = false,
 	sounds = nil,
 	on_rightclick = function (pos, node)

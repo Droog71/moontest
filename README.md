@@ -7,15 +7,11 @@ Your habitat has been constructed and your mining systems are operational.</br>
 As a resident engineer, you must manage life support systems and</br>
 mining equipment to ensure your income is adequate for survival.</br>
 </br>
-Expenses are deducted from your balance at regular intervals.</br>
-The amount deducted increases as time goes on, increasing the</br>
-difficulty of the game the longer you play.</br>
-</br>
-You can win the game by earning $30,000 and lose if you reach $10,000 in debt.</br>
-These limits can be removed with the /unlimited console command.</br>
-You must be granted server privileges to use this command, (ie: /grantme server)</br>
+Expenses are deducted from your balance at regular intervals and</br>
+are increased based on the total amount of ore you have mined.</br>
 </br>
 Moontest is playable in both single player and multiplayer game modes.</br>
+</br>
 </br>
 <h2>Gameplay</h2>
 <img src="https://i.imgur.com/C8vUbjb.png">

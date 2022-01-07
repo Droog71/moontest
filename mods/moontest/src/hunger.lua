@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.2
+    Version: 1.0.3
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -57,7 +57,7 @@ minetest.register_craftitem("moontest:space_food", {
 --manages hunger for all players
 function update_hunger()
     hunger_timer = hunger_timer + 1
-    if hunger_timer >= 200 then
+    if hunger_timer >= 150 then
         for name, hunger_level in pairs(hunger_levels) do
             local player = minetest.get_player_by_name(name)
             if hunger_levels[name] > 0 and player:get_hp() > 0 then

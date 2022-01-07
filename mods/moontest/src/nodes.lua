@@ -1,15 +1,15 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.2
+    Version: 1.0.3
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 --all standard nodes are registered here, other nodes are handled by the scripts below
 
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "machine_nodes.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "pipe_nodes.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "special_nodes.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "code" .. DIR_DELIM .. "colliders.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "machine_nodes.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "pipe_nodes.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "special_nodes.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "colliders.lua")
 
 minetest.register_node("moontest:moon_surface", {
     name = "moon_surface",

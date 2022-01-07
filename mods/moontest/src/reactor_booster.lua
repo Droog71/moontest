@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.2
+    Version: 1.0.3
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -30,7 +30,7 @@ minetest.register_node("moontest:reactor_booster", {
         effector = {
             action_on = function(pos, node)
                 local meta = minetest.get_meta(pos)
-                if vector.distance(pos, reactor_pos) < 20 then
+                if vector.distance(pos, reactor_pos) < 10 then
                     if meta:get_int("on") == 0 then
                         max_power = max_power + 100
                         meta:set_int("on", 1)

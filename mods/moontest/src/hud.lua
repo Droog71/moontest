@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.2
+    Version: 1.0.3
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -445,6 +445,12 @@ function update_money_hud()
                 text = "Money: $" .. money,
                 number = 0xFFFFFF
             })
+            local spec = player:get_inventory_formspec()
+            local str = string.sub(spec,48,51)
+            if str == "Shop" then
+                local formspec = shop_formspec(player)
+                player:set_inventory_formspec(table.concat(formspec, ""))
+            end
         end
     end
 end

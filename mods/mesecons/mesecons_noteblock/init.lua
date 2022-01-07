@@ -1,5 +1,5 @@
 minetest.register_node("mesecons_noteblock:noteblock", {
-	description = "Noteblock",
+	description = "Noteblock\n" .. "Emits a sound when energized.",
 	tiles = {"mesecons_noteblock.png"},
 	is_ground_content = false,
 	groups = {dig_immediate=2},

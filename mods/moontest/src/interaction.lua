@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.2
+    Version: 1.0.3
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -61,12 +61,14 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
         minetest.set_node(oxygen_generator_pos, {name = "moontest:oxygen_generator_off"})
         add_hud_message("Oxygen generator: off")     
     elseif node.name == "moontest:oxygen_generator_collider" and oxygen_on() == false and power_on() then
-        minetest.sound_play('oxygen_start_stop', {
-            pos = oxygen_generator_pos,
-            max_hear_distance = 16
-        })
-        minetest.set_node(oxygen_generator_pos, {name = "moontest:oxygen_generator_on"})
-        add_hud_message("Oxygen generator: on")
+        if tutorial_active == false or tutorial_step ~= 13 then
+            minetest.sound_play('oxygen_start_stop', {
+                pos = oxygen_generator_pos,
+                max_hear_distance = 16
+            })
+            minetest.set_node(oxygen_generator_pos, {name = "moontest:oxygen_generator_on"})
+            add_hud_message("Oxygen generator: on")
+        end
     end
         
     if node.name == "moontest:gravity_generator_collider" and gravity_on() then

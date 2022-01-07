@@ -1,12 +1,13 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.2
+    Version: 1.0.3
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 energy_levels = {}
 sleeping = {}
-local energy_timer = 0
+local fatigue_timer = 0
+local sleep_timer = 0
 
 --initializes the energy variable
 minetest.register_on_joinplayer(function(player)
@@ -17,8 +18,8 @@ end)
 
 --manages fatigue and sleeping
 function update_energy()
-    energy_timer = energy_timer + 1
-    if energy_timer >= 200 then
+    fatigue_timer = fatigue_timer + 1
+    if fatigue_timer >= 300 then
         for name, energy_level in pairs(energy_levels) do
             local player = minetest.get_player_by_name(name)
             if energy_levels[name] > 0 and player:get_hp() > 0 then				
@@ -28,6 +29,11 @@ function update_energy()
             end
             update_energy_hud(name)
         end
+        fatigue_timer = 0
+    end
+	
+    sleep_timer = sleep_timer + 1
+    if sleep_timer >= 100 then
         for name, pos in pairs(sleeping) do
             local player = minetest.get_player_by_name(name)
             if energy_levels[name] ~= nil then
@@ -36,10 +42,10 @@ function update_energy()
                 end
             end
             update_energy_hud(name)
-        end	
-        energy_timer = 0
+        end
+        sleep_timer = 0
     end
-	
+  
     for name, pos in pairs(sleeping) do
         local player = minetest.get_player_by_name(name)
         if energy_levels[name] ~= nil then

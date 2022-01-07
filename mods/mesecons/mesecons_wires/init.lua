@@ -203,7 +203,8 @@ local function register_wires()
 		end
 
 		mesecon.register_node(":mesecons:wire_"..nodeid, {
-			description = "Mesecon",
+			description = "Wire\n" .. "Used to connect relays to machines,\n" ..
+          "reactor boosters, delayers and micro-controllers.",
 			drawtype = "nodebox",
 			inventory_image = "mesecons_wire_inv.png",
 			wield_image = "mesecons_wire_inv.png",

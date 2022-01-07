@@ -81,7 +81,8 @@ if i > 1 then
 end
 
 local off_state = {
-	description = "Delayer",
+	description = "Delayer\n" .. "When energized, allows the logic signal\n" ..
+      "to continue after an adjustable delay.",
 	tiles = {
 		"mesecons_delayer_off_"..tostring(i)..".png",
 		"mesecons_delayer_bottom.png",
