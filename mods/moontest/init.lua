@@ -125,7 +125,7 @@ minetest.register_on_dieplayer(function(player)
     temperature_levels[player_name] = 100
     energy_levels[player_name] = 100
     money = money - 2000
-    add_hud_message(player_name .. " is being cloned for $2000.")            
+    add_hud_message(player_name .. " is being cloned for $2000.")
 end)
 
 --loads saved game data from file
