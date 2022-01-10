@@ -24,30 +24,24 @@ minetest.settings:set_bool("smooth_lighting", true)
 minetest.register_item(":", { type = "none", wield_image = "hand.png"})
 skybox.add({"Space", "#FFFFFF", 0, { density = 0}})
 
--- Executes source files, just give .lua filename from src directory
-local do_src = function(filename)
-    dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. filename .. ".lua")
-end
-
--- Initalize game concepts
-do_src("nodes")
-do_src("habitat")
-do_src("oxygen")
-do_src("climate")
-do_src("hunger")
-do_src("energy")
-do_src("machines")
-do_src("interaction")
-do_src("simulation")
-do_src("reactor_booster")
-do_src("logic")
-do_src("aliens")
-do_src("research")
-do_src("sprint")
-do_src("hud")
-do_src("formspec")
-do_src("tutorial")
-do_src("shop_formspec")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "nodes.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "habitat.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "oxygen.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "climate.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "hunger.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "energy.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "machines.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "interaction.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "simulation.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "reactor_booster.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "logic.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "aliens.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "research.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "sprint.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "hud.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "formspec.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "tutorial.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "shop_formspec.lua")
 
 minetest.register_entity("moontest:alien", alien_definition)
 
@@ -125,7 +119,7 @@ minetest.register_on_dieplayer(function(player)
     temperature_levels[player_name] = 100
     energy_levels[player_name] = 100
     money = money - 2000
-    add_hud_message(player_name .. " is being cloned for $2000.")
+    add_hud_message(player_name .. " is being cloned for $2000.")            
 end)
 
 --loads saved game data from file

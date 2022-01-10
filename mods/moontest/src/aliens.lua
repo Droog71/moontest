@@ -142,8 +142,9 @@ function alien_step(self, dtime)
     end
       
     update_state(self)	
-      
-    if minetest.get_node(self.object:get_pos()).name ~= "air" then
+    
+    local node = minetest.get_node(self.object:get_pos()).name
+    if node ~= "air" and string.sub(node, 0, 8) ~= "mesecons" then
         self.object:remove()
         alien_count = alien_count - 1
     end
