@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -46,12 +46,6 @@ minetest.register_node("moontest:vent", {
 		"duct.png",
 		"duct.png"
 	}
-})
-
-minetest.register_node("moontest:crate", {
-    name = "crate",
-    description = "crate",
-    tiles = {"crate.png"}
 })
 
 minetest.register_node("moontest:console", {

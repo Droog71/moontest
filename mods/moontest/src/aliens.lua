@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -11,7 +11,7 @@ local spawn_timer = 0
 --spawns aliens
 function spawn_aliens()
     spawn_timer = spawn_timer + 1
-    if spawn_timer >= 500 - (450 * aggro) then
+    if spawn_timer >= 500 - (250 * aggro) then
         for x = -30,30,1 do
             for z = 26,46,1 do
                 if z > 33 then
@@ -141,12 +141,7 @@ function alien_step(self, dtime)
         follow_player(self)
     end
       
-    update_state(self)	
-      
-    if minetest.get_node(self.object:get_pos()).name ~= "air" then
-        self.object:remove()
-        alien_count = alien_count - 1
-    end
+    update_state(self)
 end
 
 --simulates gravity

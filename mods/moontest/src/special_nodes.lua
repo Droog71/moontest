@@ -1,10 +1,38 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 --special purpose nodes are registered here
+
+minetest.register_node("moontest:crate", {
+    name = "crate",
+    description = "Crate",
+    tiles = {"crate.png"},
+    groups = {dig_immediate=2},
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        meta:set_string("formspec",
+            "size[8,9]" ..
+            "list[current_name;main;0,0;8,4;]" ..
+            "list[current_player;main;0,5;8,4;]" ..
+            "listring[]")
+        local inv = meta:get_inventory()
+        inv:set_size("main", 6*4)
+    end,
+    can_dig = function(pos,player)
+        local meta = minetest.get_meta(pos);
+        local inv = meta:get_inventory()
+        return inv:is_empty("main")
+    end,
+    allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+        return stack:get_count()
+    end,
+    allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+        return stack:get_count()
+    end
+})
 
 minetest.register_node("moontest:food_vending_top", {
 	description = "Space Food Vending",

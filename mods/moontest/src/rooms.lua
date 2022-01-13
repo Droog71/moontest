@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -179,7 +179,9 @@ function build_bathroom()
 end
 
 --builds the garage
-function build_garage()    
+function build_garage() 
+    local crates_exist = false
+    
     minetest.set_node(vector.new(15, 1, 20), {name = "moontest:hovercraft"})
     minetest.set_node(vector.new(-15, 1, 20), {name = "moontest:hovercraft_2"})
     
@@ -202,21 +204,33 @@ function build_garage()
     for y = 1,2,1 do
         for x = -24,-9,1 do
             for z = 8,16,1 do
-                if math.random(0, 100) > y * 40 then
-                    if y == 1 or (y == 2 and minetest.get_node(vector.new(x, 1, z)).name == "moontest:crate") then
-                        minetest.set_node(vector.new(x, y, z), {name = "moontest:crate"})
-                    end
+                if minetest.get_node(vector.new(x, y, z)).name == "moontest:crate" then
+                    crates_exist = true
                 end
             end
         end
     end
     
-    for y = 1,2,1 do
-        for x = 9,24,1 do
-            for z = 8,16,1 do
-                if math.random(0, 100) > y * 40 then
-                    if y == 1 or (y == 2 and minetest.get_node(vector.new(x, 1, z)).name == "moontest:crate") then
-                        minetest.set_node(vector.new(x, y, z), {name = "moontest:crate"})
+    if crates_exist == false then
+        for y = 1,2,1 do
+            for x = -24,-9,1 do
+                for z = 8,16,1 do
+                    if math.random(0, 100) > y * 40 then
+                        if y == 1 or (y == 2 and minetest.get_node(vector.new(x, 1, z)).name == "moontest:crate") then
+                            minetest.set_node(vector.new(x, y, z), {name = "moontest:crate"})
+                        end
+                    end
+                end
+            end
+        end
+        
+        for y = 1,2,1 do
+            for x = 9,24,1 do
+                for z = 8,16,1 do
+                    if math.random(0, 100) > y * 40 then
+                        if y == 1 or (y == 2 and minetest.get_node(vector.new(x, 1, z)).name == "moontest:crate") then
+                            minetest.set_node(vector.new(x, y, z), {name = "moontest:crate"})
+                        end
                     end
                 end
             end

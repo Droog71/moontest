@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -27,11 +27,15 @@ message_hud_ids = {}
 --initializes all of the HUD elements
 minetest.register_on_joinplayer(function(player)
     if player then
+        local scale = tonumber(minetest.settings:get("gui_scaling"))
+        scale = scale < 1 and 0.9 or scale
+        local mp_display = power_on() and max_power or 0
+        
         hud_bg_ids[player:get_player_name()] = player:hud_add({
             hud_elem_type = "image",
             position = {x = 0, y = 0},
             offset = {x = 163, y = 430},
-            scale = {x = 1, y = 1},
+            scale = {x = scale, y = scale},
             text = "hud_bg_transparent.png"
         })
         oxygen_hud_ids[player:get_player_name()] = player:hud_add({
@@ -119,7 +123,7 @@ minetest.register_on_joinplayer(function(player)
             position = {x = 0, y = 0},
             offset = {x = 150, y = 580},
             scale = {x = 1, y = 1},
-            text = "Power consumption: " .. power_consumption() .. "/" .. max_power,
+            text = "Power consumption: " .. power_consumption() .. "/" .. mp_display,
             number = 0xFFFFFF
         })
         money_hud_ids[player:get_player_name()] = player:hud_add({
@@ -132,14 +136,14 @@ minetest.register_on_joinplayer(function(player)
         })
         message_bg_hud_ids[player:get_player_name()] = player:hud_add({
             hud_elem_type = "image",
-            position = {x = 1, y = 0.38},
+            position = {x = 1, y = 0.43},
             offset = {x = -210, y = 0},
-            scale = {x = 1, y = 1},
+            scale = {x = scale, y = scale},
             text = "message_background_transparent.png"
         })
         message_hud_ids[player:get_player_name()] = player:hud_add({
             hud_elem_type = "text",
-            position = {x = 1, y = 0.4},
+            position = {x = 1, y = 0.45},
             offset = {x = -210, y = 0},
             scale = {x = 1, y = 1},
             text = messages,
@@ -418,13 +422,14 @@ function update_power_hud()
     for name, id in pairs(money_hud_ids) do
         local player = minetest.get_player_by_name(name)
         if player then
+            local mp_display = power_on() and max_power or 0
             player:hud_remove(power_hud_ids[name])
             power_hud_ids[name] = player:hud_add({
             hud_elem_type = "text",
                 position = {x = 0, y = 0},
                 offset = {x = 150, y = 580},
                 scale = {x = 1, y = 1},
-                text = "Power consumption: " .. power_consumption() .. "/" .. max_power,
+                text = "Power consumption: " .. power_consumption() .. "/" .. mp_display,
                 number = 0xFFFFFF
             })
         end
@@ -463,7 +468,7 @@ function update_message_hud()
           player:hud_remove(message_hud_ids[name])
           message_hud_ids[name] = player:hud_add({
               hud_elem_type = "text",
-              position = {x = 1, y = 0.4},
+              position = {x = 1, y = 0.45},
               offset = {x = -210, y = 0},
               scale = {x = 1, y = 1},
               text = messages,

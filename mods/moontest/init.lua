@@ -1,11 +1,11 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 money = 1000
-aggro = 0.3
+aggro = 0
 
 local loaded = false
 local loading_timer = 0
@@ -16,44 +16,20 @@ local previous_expense = 0
 
 local enable_fog = minetest.settings:get_bool("enable_fog")
 local menu_clouds = minetest.settings:get_bool("menu_clouds")
+local mip_map = minetest.settings:get_bool("mip_map")
 local smooth_lighting = minetest.settings:get_bool("smooth_lighting")
 
 minetest.settings:set_bool("enable_fog", false)
 minetest.settings:set_bool("menu_clouds", false)
+minetest.settings:set_bool("mip_map", true)
 minetest.settings:set_bool("smooth_lighting", true)
 minetest.register_item(":", { type = "none", wield_image = "hand.png"})
-skybox.add({"Space", "#FFFFFF", 0, { density = 0}})
+skybox.add({"Space", "#FFFFFF", 0.1, { density = 0}})
+skybox.add({"DarkStormy", "#1f2226", 0.5, { density = 0}})
 
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "nodes.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "habitat.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "oxygen.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "climate.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "hunger.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "energy.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "machines.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "interaction.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "simulation.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "reactor_booster.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "logic.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "aliens.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "research.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "sprint.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "hud.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "formspec.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "tutorial.lua")
-dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "shop_formspec.lua")
+dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. "do_file.lua")
 
 minetest.register_entity("moontest:alien", alien_definition)
-
---disables creative mode and invulnerability
-minetest.register_on_prejoinplayer(function(pname)
-    if minetest.settings:get_bool("creative_mode") == true then
-        return "This game does not support creative mode."
-    end
-        if minetest.settings:get_bool("enable_damage") == false then
-        return "Damage must be enabled to play this game."
-    end
-end)
 
 --sets up the player character and loads the world
 minetest.register_on_joinplayer(function(player)
@@ -197,7 +173,7 @@ function save_game()
         hunger_levels = hunger_levels,
         oxygen_levels = oxygen_levels,
         temperature_levels = temperature_levels,
-        energy_levels = energy_levels
+        energy_levels = energy_levels,
     }
     local save_data = minetest.write_json(save_vars)
     local save_path = minetest.get_worldpath() .. DIR_DELIM .. "save_data.json"
@@ -228,6 +204,7 @@ minetest.register_on_shutdown(function()
     money = money - math.floor(total_ore_mined * 0.01)
     minetest.settings:set_bool("enable_fog", enable_fog)
     minetest.settings:set_bool("menu_clouds", menu_clouds)
+    minetest.settings:set_bool("mip_map", mip_map)
     minetest.settings:set_bool("smooth_lighting", smooth_lighting)
     save_game()
 end)
@@ -242,6 +219,14 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
         for x = minp.x, maxp.x do
             local vi = area:index(x, 0, z)
             data[area:index(x, 0, z)] = minetest.get_content_id("moontest:moon_surface")
+            local rand = math.random(1,1000)
+            if rand >= 999 then
+                local x_ok = x < -25 or x > 25
+                local z_ok = z < -25 or z > 25
+                if x_ok or z_ok then
+                    data[area:index(x, 1, z)] = minetest.get_content_id("moontest:moon_rock")
+                end
+            end
         end
     end
     vm:set_data(data)
@@ -252,7 +237,7 @@ end)
 minetest.register_globalstep(function(dtime)   
     if habitat_built == false then
         for _,player in pairs(minetest.get_connected_players()) do
-            player:set_pos(vector.new(0, 10, 0))
+            player:set_pos(vector.new(0, 20, 0))
             player:set_physics_override({gravity = 0})
         end
         
@@ -268,15 +253,25 @@ minetest.register_globalstep(function(dtime)
             loaded = true
         end
         if tutorial_active == false then
-            update_oxygen()
+          
+            if terraformer_on() == false then
+                update_oxygen()
+                update_climate()
+                update_simulation()
+                spawn_aliens()
+            end
+            
             update_hunger()
-            update_climate()
-            update_simulation()
-            spawn_aliens()
         
             expense_timer = expense_timer + 1
             if expense_timer >= 1000 then
                 local expense = math.floor(total_ore_mined * 0.01)
+                local tf_loss = bool_to_number(terraformer_on()) * 3000
+                local potential = ((max_power * 0.25) * 3) - tf_loss
+                if potential < 0 then potential = 0 end
+                local per_cycle = potential * 2
+                local cap = per_cycle * 0.75
+                if expense > cap then expense = math.floor(cap) end
                 money = money - expense
                 update_money_hud()
                 add_hud_message("Expenses paid: " .. "$" .. expense)
@@ -284,9 +279,8 @@ minetest.register_globalstep(function(dtime)
                     add_hud_message("Expenses increased to: " .. "$" .. expense)
                     previous_expense = total_ore_mined * 0.01
                 end
-                if aggro < 1 then
-                    aggro = aggro + 0.01
-                end
+                local ag = expense * 0.0005
+                aggro = ag <= 1 and ag or 1
                 expense_timer = 0
             end
                 
@@ -333,6 +327,15 @@ function player_in_range(machine_pos)
         end
     end
     return false
+end
+
+--gets the size of a table
+function get_size(table)
+    local size = 0
+    for k,v in pairs(table) do
+        size = size + 1
+    end
+    return size
 end
 
 --converts the given boolean variable to a number

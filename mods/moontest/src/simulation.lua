@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -17,13 +17,13 @@ local simulation_timer = 0
 function update_simulation()
     simulation_timer = simulation_timer + 1
     if simulation_timer > 100 then
-        stability = 92
+        stability = 95
         if gravity_on() and generated_gravity > 100 then
             stability = stability - (generated_gravity - 100)
         else
-            stability = 8 + (bool_to_number(gravity_on()) * (generated_gravity - 16))
+            stability = 5 + (bool_to_number(gravity_on()) * (generated_gravity - 10))
         end
-        if stability > 92 then stability = 92 end
+        if stability > 95 then stability = 95 end
         if math.random(0, 100) > stability then
             local machine = math.random(1, 6)
             if machine == 1 and oxygen_on() then

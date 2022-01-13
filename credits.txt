@@ -9,6 +9,7 @@ Table and chair textures: CC0, https://ambientcg.com/view?id=Wood067
 Counter texture: CC0, https://ambientcg.com/view?id=Marble016
 Sofa texture: CC0, https://ambientcg.com/view?id=Fabric045
 Motor texture: CC0, https://publicdomainvectors.org/en/free-clipart/Electrical-motor/56259.html
+Grass texture: CC-BY 3.0, https://opengameart.org/content/grass-texture
 
 The hovercraft fan,refridgerator and cabinet textures were created from photographs of real objects.
 Other textures not listed here were created from scratch using GIMP.
@@ -18,6 +19,8 @@ Astronaut sprite: CC0, https://opengameart.org/content/astronaut-ideas
 Alien sprite: CC0, https://opengameart.org/content/2d-rpg-enemy-set
 Alien splat: CC0, https://opengameart.org/content/splattexture
 Wrench: CC0, https://publicdomainvectors.org/en/free-clipart/Pipe-wrench-vector-illustration/11183.html
+Flashlight: CC0, https://publicdomainvectors.org/en/free-clipart/Flashlight-light/85056.html
+Floppy disk: CC0, https://publicdomainvectors.org/en/free-clipart/File-save-icon/88085.html
 
 --Menu Assets--
 Menu background image: CC0, https://svs.gsfc.nasa.gov/3895
@@ -38,6 +41,11 @@ Alien sound: CC0, https://freesound.org/people/JustInvoke/sounds/147017/
 Alien attack sound: CC0, https://freesound.org/people/vmgraw/sounds/257690/
 Alien death sound: CC0, https://freesound.org/people/mrickey13/sounds/515620/
 Research station sound: CC0, https://freesound.org/people/wtermini/sounds/546450/
+Rocket sound: CC0, https://freesound.org/people/Smokey9977/sounds/569563/
+REM Extractor sound: CC0, https://freesound.org/people/Opticreep/sounds/255401/
+Generator sound: CC0, https://freesound.org/people/alphatone/sounds/561788/
+Terraformer sound: CC BY 3.0, https://freesound.org/people/chelan/sounds/104833/
+Alarm sound: CC0, https://freesound.org/people/imagery2/sounds/458570/
 
 --Models--
 Reactor model: CC BY-SA 4.0, https://sketchfab.com/3d-models/big-reactor-38f045b46af043a798ca40d96f754e54
@@ -46,19 +54,26 @@ Coolant tank model: CC BY-SA 4.0, https://sketchfab.com/3d-models/scifi-water-ta
 Drill model: CC BY-SA 4.0, https://sketchfab.com/3d-models/driller-cc521221251a4c87b0cb429f98de882c
 HVAC model: CC BY-SA 4.0, https://sketchfab.com/3d-models/hvac-unit-0bf1acaa6f1d4a9bb38cfc91fd115f9c
 Oxygen generator model: CC BY-SA 4.0, https://sketchfab.com/3d-models/apparatus02-c00e97d2f9454840a96d8adcae22738f
-Console model: CC BY-SA 4.0, https://sketchfab.com/3d-models/control-painel-c05341af291b49ef9cfce8e9fbe413f8
+Generator model: CC BY 4.0, https://sketchfab.com/3d-models/generator-e7d28213523a4690a9ba95eced1d7192
+REM Extractor: CC BY 4.0, https://sketchfab.com/3d-models/command-console-22ebb54b70c4429aade7b4831fb59b9d
 Research station model: CC BY-SA 4.0, https://sketchfab.com/3d-models/kyecorp-console-f609887785fc497e9f0443fb7b276b81
+Research probe model: CC BY 4.0, https://sketchfab.com/3d-models/luna-robot-a3e3e333700e4b0dbe134ba24721500c
+Console model: CC BY-SA 4.0, https://sketchfab.com/3d-models/control-painel-c05341af291b49ef9cfce8e9fbe413f8
 Toilet model: CC BY 4.0, https://sketchfab.com/3d-models/toilet-868beb5a0e6840d7a1d647a42a5e5a8c
+Moon rock: CC BY 4.0, https://sketchfab.com/3d-models/cyberpunk-rock-92ff94c70b7349b89b013e8128961b09
+Terraformer trees: CC BY 4.0, https://sketchfab.com/3d-models/low-poly-tree-concept-e815f8acd6d34528a82feef38d5af880
 
-The hovercraft, coolant pump, pipes, bunk beds, refridgerator, light fixtures, sink and shower meshes were all created by Droog71 and are licensed CC0.
+
+Models made by Droog71 licensed CC0:
+Hovercraft, work lights, mesecons switch, solar panel, coolant pump, pipes, bunk beds, refridgerator, light fixtures, sink and shower.
 
 --Code--
 All code was written by Droog71 and is licensed AGPLv3
 Mob code is based on this repo https://github.com/CasimirKaPazi/mobapi
 
 
-Skybox Mod
-----------
+Skybox
+------
 * Code: LGPLv2.1
 
 Copyright (C) 2017 - Auke Kok <sofar@foo-projects.org>
@@ -74,6 +89,11 @@ Contributors:
 Sky: CC0, Droog71
 Planet: CC0, https://opengameart.org/content/planet-0
 
+LWScratch
+---------
+Developer: https://content.minetest.net/users/loosewheel/
+LGPL-2.1-only for code.
+CC-BY-SA-3.0 for media.
 
 Mesecons
 --------
@@ -96,3 +116,20 @@ suzenako 	Piston sounds.
 Uberi/Temperest 	Code, textures, documentation.
 VanessaE 	Code, recipes, textures, design.
 Whiskers75 	Logic gates implementation.
+
+Wielded Light Mod
+-----------------
+https://github.com/minetest-mods/wielded_light
+License: [GPL-3](https://github.com/bell07/minetest-wielded_light/blob/master/LICENSE)
+
+AntumMT
+BlockySurvival
+FaceDeer
+lhofhansl
+oversword
+sfence
+snowyu
+
+ScrewDriver2 Mod
+----------------
+https://github.com/12Me21/screwdriver2

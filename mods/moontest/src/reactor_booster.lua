@@ -1,8 +1,39 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
+
+local function reactor_smoke()
+    local reactor_meta = minetest.get_meta(reactor_pos)
+    if power_on() and reactor_meta:get_int("smoking") == 0 then
+        minetest.sound_play('alarm', {
+            pos = reactor_pos,
+            max_hear_distance = 16
+        })
+        minetest.add_particlespawner({
+            amount = 300,
+            time = 3,
+            minpos = {x=reactor_pos.x-2, y=reactor_pos.y, z=reactor_pos.z-1},
+            maxpos = {x=reactor_pos.x+2, y=reactor_pos.y+2, z=reactor_pos.z+2},
+            minvel = {x=-0.1, y=0.1, z=-0.1},
+            maxvel = {x=0.2, y=0.2, z=0.2},
+            minacc = {x=-0.1, y=0.1, z=-0.1},
+            maxacc = {x=0.2, y=0.2, z=0.2},
+            minexptime = 6,
+            maxexptime = 8,
+            minsize = 10,
+            maxsize = 12,
+            collisiondetection = false,
+            vertical = false,
+            texture = "smoke.png"
+        })
+        reactor_meta:set_int("smoking", 1)
+        minetest.after(3,function()
+            reactor_meta:set_int("smoking", 0)
+        end)
+    end
+end
 
 --increases reactor output by 100 when active
 minetest.register_node("moontest:reactor_booster", {
@@ -11,7 +42,7 @@ minetest.register_node("moontest:reactor_booster", {
         "Adds 100 to maximum reactor output.\n" ..
         "Must be placed near the reactor.\n" ..
         "Overloads after 10 seconds. 10 second cooldown.",
-    tiles = {"reactor_on.png"},
+    tiles = {"reactor_booster.png"},
     drawtype = 'mesh',
     mesh = "reactor_booster.obj",
     use_texture_alpha = "clip",
@@ -65,23 +96,7 @@ minetest.register_abm({
               timer = timer + 1
               meta:set_int("timer", timer)
               if timer == 5 then
-                  minetest.add_particlespawner({
-                      amount = 600,
-                      time = 3,
-                      minpos = {x=pos.x-2,y=pos.y+1,z=pos.z-1},
-                      maxpos = {x=pos.x+2,y=pos.y+15,z=pos.z+2},
-                      minvel = {x=0.2, y=0.2, z=0.2},
-                      maxvel = {x=0.4, y=0.8, z=0.4},
-                      minacc = {x=-0.2,y=0,z=-0.2},
-                      maxacc = {x=0.2,y=0.1,z=0.2},
-                      minexptime = 6,
-                      maxexptime = 8,
-                      minsize = 10,
-                      maxsize = 12,
-                      collisiondetection = false,
-                      vertical = false,
-                      texture = "smoke.png"
-                  })  
+                  reactor_smoke()
               end
           end
       else

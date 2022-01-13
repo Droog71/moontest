@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -46,7 +46,7 @@ minetest.register_node("moontest:relay_on", {
 --prevents the use of fast circuits via machine failure
 minetest.register_globalstep(function(dtime)  
     heat_timer = heat_timer + 1
-    if heat_timer >= 50 then
+    if heat_timer >= 1000 then
         local reactor_heat = minetest.get_meta(reactor_pos):get_int("mese_heat")
         if reactor_heat > 1 then
             if power_on() then
@@ -126,6 +126,17 @@ minetest.register_globalstep(function(dtime)
             end
         else
             minetest.get_meta(pump_pos):set_int("mese_heat", 0)
+        end
+        local terraformer_heat = minetest.get_meta(terraformer_pos):get_int("mese_heat")
+        if terraformer_heat > 1 then
+            if terraformer_on() then
+                terraformer_shutdown()
+                minetest.get_meta(terraformer_pos):set_int("mese_heat", terraformer_pos)
+                add_hud_message("Terraformer: failed")
+                oxygen_failed = true
+            end
+        else
+            minetest.get_meta(terraformer_pos):set_int("mese_heat", 0)
         end
         heat_timer = 0
     end

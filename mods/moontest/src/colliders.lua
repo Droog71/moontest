@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -10,6 +10,13 @@ minetest.register_node("moontest:invisible", {
     tiles = {"invisible.png"},
     drawtype = 'airlike',
     light_source = 10
+})
+
+minetest.register_node("moontest:invisible_unlit", {
+    name = "invisible_unlit",
+    description = "invisible_unlit",
+    tiles = {"invisible.png"},
+    drawtype = 'airlike',
 })
 
 minetest.register_node("moontest:reactor_collider", {

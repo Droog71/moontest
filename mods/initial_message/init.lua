@@ -10,7 +10,7 @@ local function greeting_formspec(player)
       "Welcome to Moontest: Moon Habitat Simulator!\n" .. 
       "Press I to open your inventory.\n" ..
       "Click the tutorial button there to start the tutorial.\n" ..
-      "Alternatively, click the manual button to read the manual.\n\n" ..
+      "Alternatively, click the manual button\nto read the manual.\n\n" ..
       "Good luck and have fun!"
     local formspec = {
         "size[8.5,6]",

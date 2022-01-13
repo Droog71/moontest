@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -133,11 +133,30 @@ local tutorial_fs_strings = {
   "bgcolor[#2d2d2d;false]" ..
   "label[1.5,1;" ..
   "This is your research station.\n" ..
-  "Here you can exchange mob drops for money.\n" ..
+  "Here you can exchange items for money,\n" ..
+  "increase your research level \n" ..
+  "and unlock new items in the shop.\n" ..
   "Left click the research station with the\n" ..
   "green goo in your hand to continue.]" ..
   "image[1.5,4;6,3.375;readme__12.png]" ..
   "button[3,8;2,0.5;ok;OK]",
+  
+  "size[8,11]" ..
+  "bgcolor[#2d2d2d;false]" ..
+  "label[1.5,1;" ..
+  "Research data can be gathered using\n" ..
+  "research probes outside the habitat.\n" ..
+  "A generator with fuel must be placed within 10\n" ..
+  "meters of the probe. The farther probes are\n" .. 
+  "from the habitat and each other, the more data\n" .. 
+  "they will collect. You can monitor all of your\n" ..
+  "generators from the power window accessed via\n" .. 
+  "your inventory window. Work lights are also powered\n" ..
+  "by generators and can be helpful when setting up\n" .. 
+  "research probes. See the image below for example.\n" .. 
+  "Go ahead and try setting up a research probe now.]" ..
+  "image[1.5,6;6,3.375;readme__16.png]" ..
+  "button[3,10;2,0.5;ok;OK]",
   
   "size[8,11]" ..
   "bgcolor[#2d2d2d;false]" ..
@@ -179,15 +198,6 @@ local tutorial_fs_strings = {
   "Click ok to resume normal gameplay.]" ..
   "button[2,3;2,0.5;ok;OK]"
 }
-
---gets the size of a table
-local function get_size(table)
-    local size = 0
-    for k,v in pairs(table) do
-        size = size + 1
-    end
-    return size
-end
 
 --empties the inventory
 local function empty_inventory(player)
@@ -313,6 +323,46 @@ local function check_tutorial_conditions(player)
             tutorial_step_complete = tutorial_step_complete + 1
         end
     elseif tutorial_step == 12 and tutorial_step_complete == 12 then 
+        if not player:get_inventory():contains_item("main", "moontest:research_probe") then
+            local stack1 = ItemStack("moontest:research_probe")
+            stack1:set_count(1)
+            player:get_inventory():add_item("main", stack1)
+            
+            local stack2 = ItemStack("portable_power:generator")
+            stack2:set_count(1)
+            player:get_inventory():add_item("main", stack2)
+            
+            local stack3 = ItemStack("mesecons_switch:mesecon_switch_off")
+            stack3:set_count(1)
+            player:get_inventory():add_item("main", stack3)
+            
+            local stack4 = ItemStack("work_lights:work_light_off")
+            stack4:set_count(1)
+            player:get_inventory():add_item("main", stack4)
+            
+            local stack5 = ItemStack("work_lights:flashlight")
+            stack5:set_count(1)
+            player:get_inventory():add_item("main", stack5)
+            
+            local stack6 = ItemStack("portable_power:fuel")
+            stack6:set_count(10)
+            player:get_inventory():add_item("main", stack6)
+            
+            hud_img = player:hud_add({
+                hud_elem_type = "image",
+                position = {x = 0.5, y = 0.15},
+                offset = {x = 0, y = 0},
+                scale = {x = 0.25, y = 0.25},
+                text = "green.png"
+            })
+        end
+    elseif tutorial_step == 13 and tutorial_step_complete == 12 then
+        local producers = get_size(power_producers)
+        local consumers = get_size(power_consumers)
+        if producers > 0 and consumers > 0 then
+            tutorial_step_complete = tutorial_step_complete + 1
+        end
+    elseif tutorial_step == 13 and tutorial_step_complete == 13 then
         if not player:get_inventory():contains_item("main", "moontest:sensor") then
             local stack1 = ItemStack("moontest:sensor")
             stack1:set_count(10)
@@ -344,12 +394,12 @@ local function check_tutorial_conditions(player)
                 text = "readme__13.png"
             })
         end
-    elseif tutorial_step == 13 and tutorial_step_complete == 12 then 
+    elseif tutorial_step == 14 and tutorial_step_complete == 13 then 
         if minetest.get_node(oxygen_generator_pos).name == "moontest:oxygen_generator_on" then
             player:hud_remove(hud_img)
             tutorial_step_complete = tutorial_step_complete + 1
         end
-    elseif tutorial_step == 13 and tutorial_step_complete == 13 then 
+    elseif tutorial_step == 14 and tutorial_step_complete == 14 then 
         if not player:get_inventory():contains_item("main", "moontest:reactor_booster") then
             local stack1 = ItemStack("moontest:reactor_booster")
             stack1:set_count(10)
@@ -367,17 +417,17 @@ local function check_tutorial_conditions(player)
                 text = "readme__14.png"
             })
         end
-    elseif tutorial_step == 14 and tutorial_step_complete == 13 then
+    elseif tutorial_step == 15 and tutorial_step_complete == 14 then
         if max_power > 600 then
             tutorial_step_complete = tutorial_step_complete + 1
             player:hud_remove(hud_img)
         end
-    elseif tutorial_step == 15 and tutorial_step_complete == 14 then 
+    elseif tutorial_step == 16 and tutorial_step_complete == 15 then 
         empty_inventory(player)
         player:set_physics_override({gravity = 0})
-        for x = -24, 24, 1 do
-            for z = -24, 24, 1 do
-                for y = 0, 8, 1 do
+        for x = -50, 50, 1 do
+            for z = -50, 50, 1 do
+                for y = 1, 20, 1 do
                     minetest.remove_node(vector.new(x, y, z))
                 end
             end
@@ -403,9 +453,9 @@ minetest.register_on_shutdown(function()
         for _,player in pairs(minetest.get_connected_players()) do
             empty_inventory(player)
         end
-        for x = -24, 24, 1 do
-            for z = -24, 24, 1 do
-                for y = 0, 8, 1 do
+        for x = -50, 50, 1 do
+            for z = -50, 50, 1 do
+                for y = 1, 20, 1 do
                     minetest.remove_node(vector.new(x, y, z))
                 end
             end
@@ -456,9 +506,45 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             if key == "start" then
                 tutorial_step = 1
                 tutorial_step_complete = 1
-                tutorial_active = true
+                for x = -50, 50, 1 do
+                    for z = -50, 50, 1 do
+                        for y = 1, 20, 1 do
+                            minetest.remove_node(vector.new(x, y, z))
+                        end
+                    end
+                end
+                build_enclosure()
                 restart_game()
+                tutorial_active = true
             end
         end
     end
 end)
+
+function build_enclosure()
+    for x = -48, 48, 1 do
+        for y = 1, 20, 1 do
+            minetest.set_node(vector.new(x, y, -48), { name = "moontest:invisible_unlit" })
+        end
+    end
+    for x = -48, 48, 1 do
+        for y = 1, 20, 1 do
+            minetest.set_node(vector.new(x, y, 48), { name = "moontest:invisible_unlit" })
+        end
+    end
+    for z = -48, 48, 1 do
+        for y = 1, 20, 1 do
+            minetest.set_node(vector.new(-48, y, z), { name = "moontest:invisible_unlit" })
+        end
+    end
+    for z = -48, 48, 1 do
+        for y = 1, 20, 1 do
+            minetest.set_node(vector.new(48, y, z), { name = "moontest:invisible_unlit" })
+        end
+    end
+    for x = -48, 48, 1 do
+        for z = -48, 48, 1 do
+            minetest.set_node(vector.new(x, 20, z), { name = "moontest:invisible_unlit" })
+        end
+    end
+end
