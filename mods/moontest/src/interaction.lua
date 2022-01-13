@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -8,8 +8,12 @@
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
         
     if node.name == "moontest:food_vending_top" or node.name == "moontest:food_vending_bottom" then
-        if money >= 10 and power_on() then
-            buy_space_food(puncher)
+        local amount = 1
+        if puncher:get_player_control().sneak then
+            amount = 10
+        end
+        if money >= 10 * amount and power_on() then
+            buy_space_food(puncher, amount)
         end
     end
         
@@ -61,7 +65,7 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
         minetest.set_node(oxygen_generator_pos, {name = "moontest:oxygen_generator_off"})
         add_hud_message("Oxygen generator: off")     
     elseif node.name == "moontest:oxygen_generator_collider" and oxygen_on() == false and power_on() then
-        if tutorial_active == false or tutorial_step ~= 13 then
+        if tutorial_active == false or tutorial_step ~= 14 then
             minetest.sound_play('oxygen_start_stop', {
                 pos = oxygen_generator_pos,
                 max_hear_distance = 16

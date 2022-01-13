@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -74,8 +74,9 @@ function update_hunger()
 end
 
 --called when the player left clicks the space food vending machine
-function buy_space_food(buyer)
+function buy_space_food(buyer, amount)
     local item = ItemStack("moontest:space_food")
+    item:set_count(amount)
     buyer:get_inventory():add_item("main", item)
     local list = buyer:get_inventory():get_list("main")
     for index_1,stack_1 in pairs(list) do
@@ -91,11 +92,11 @@ function buy_space_food(buyer)
             end
         end
     end
-    money = money - 10
+    money = money - 10 * amount
     minetest.sound_play('vending', {
         pos = food_vending_bottom_pos,
         max_hear_distance = 16,
         gain = 0.5
     })
-    add_hud_message(buyer:get_player_name() .. " bought space food.")
+    add_hud_message(buyer:get_player_name() .. " bought " .. amount .. "x space food.")
 end

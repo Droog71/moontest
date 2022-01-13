@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -43,7 +43,9 @@ function build_habitat()
     build_hvac()
     build_drill()
     build_coolant_system()   
-    build_research_station()   
+    build_research_station()
+    build_computer()
+    build_teleporter()
 end
 
 --creates the drill mesh, colliders and GUI
@@ -77,7 +79,7 @@ function build_drill()
                 "field[1.8,3;2,1;Speed;Speed;]")
         end
     end
-    minetest.set_node(drill_pos, {name = "moontest:drill_on"})    
+    minetest.set_node(drill_pos, {name = "moontest:drill_on"})
 end
 
 --creates the coolant pump mesh, pipes, coolant tank, colliders and GUI
@@ -120,7 +122,7 @@ end
 
 --creates the hvac system mesh, colliders and GUI
 function build_hvac()
-   minetest.set_node(vector.new(4, 1, -20), {name = "moontest:hvac_prop"})    
+    minetest.set_node(vector.new(4, 1, -20), {name = "moontest:hvac_prop"})    
     for z = -18,-22,-1 do
         for x = 3,5,1 do
             for y = 1,2,1 do
@@ -152,7 +154,7 @@ function build_oxygen_generator()
             end
         end
     end
-    minetest.set_node(oxygen_generator_pos, {name = "moontest:oxygen_generator_on"}) 
+    minetest.set_node(oxygen_generator_pos, {name = "moontest:oxygen_generator_on"})
 end
 
 --creates the gravity generator mesh and colliders
@@ -168,7 +170,7 @@ function build_gravity_generator()
             end
         end
     end
-    minetest.set_node(gravity_generator_pos, {name = "moontest:gravity_generator_on"}) 
+    minetest.set_node(gravity_generator_pos, {name = "moontest:gravity_generator_on"})
 end
 
 --creates the reactor mesh and colliders
@@ -187,7 +189,23 @@ end
 function build_research_station()
     minetest.set_node(research_station_pos, {name = "moontest:research_station"})
     minetest.set_node(vector.new(9,2,0), {name = "moontest:research_panel"}) 
+end
+
+--builds the habitat computer
+function build_computer()
     minetest.set_node(vector.new(12,1,-6), {name = "moontest:table"})
     minetest.set_node(computer_pos, {name = "moontest:computer"}) 
     minetest.get_meta(computer_pos):set_string("formspec",table.concat(computer_formspec()))
+end
+
+--builds the elevator
+function build_teleporter()
+    for y = 1,11 do
+        minetest.set_node(vector.new(20,y,-3), {name = "moontest:wall"})
+        minetest.set_node(vector.new(20,y,-5), {name = "moontest:wall"})
+        minetest.set_node(vector.new(21,y,-4), {name = "moontest:wall"})
+    end
+    minetest.set_node(vector.new(20,0,-4), {name = "mt_teleporter:teleporter"})
+    minetest.set_node(vector.new(20,7,-4), {name = "mt_teleporter:teleporter"})
+    minetest.set_node(vector.new(20,11,-4), {name = "moontest:wall"})
 end

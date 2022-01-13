@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.3
+    Version: 1.0.4
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -13,6 +13,7 @@ drill_digging = 0
 drill_power = 0
 max_power = 600
 total_ore_mined = 0
+local update_timer = 0
 local drill_mining_timer = 0
 local drill_power_timer = 0
 local hvac_sound
@@ -35,12 +36,14 @@ function power_consumption()
     local oxygen_load = bool_to_number(oxygen_on()) * oxygen_output
     local gravity_load = bool_to_number(gravity_on()) * 100
     local pump_load = bool_to_number(pump_on()) * pump_speed
-    local total_load = drill_load + hvac_load + oxygen_load + gravity_load + pump_load
+    local tf_load = bool_to_number(terraformer_on()) * 3000
+    tf_load = tf_load + tf_work
+    local total_load = tf_load + drill_load + hvac_load + oxygen_load + gravity_load + pump_load
     return math.floor(total_load)
 end
 
 --calls the dig function and handles any subsequent reactor overloads
-function update_machines()  
+function update_machines()
     if power_on() then
         if drill_on() then          
             dig()
@@ -49,17 +52,25 @@ function update_machines()
             drill_digging = 0
             drill_resistance = 0
         end
+    else
+        drill_power = 0
+        drill_digging = 0
+        drill_resistance = 0
+    end
+    update_timer = update_timer + 1
+    if update_timer >= 25 then
+        if terraformer_on() == false then
+            for _,player in pairs(minetest.get_connected_players()) do
+                update_gravity(player:get_player_name())
+            end
+        end
         if power_consumption() >= max_power then
             add_hud_message("Reactor overloaded!")
             reactor_stop()
         end
-    else
-        drill_power = 0
-    end  
-    for _,player in pairs(minetest.get_connected_players()) do
-        update_gravity(player:get_player_name())
+        update_power_hud()
+        update_timer = 0
     end
-    update_power_hud()
 end
 
 --determines the amount of ore mined and power consumed with each cycle of the drill
@@ -221,6 +232,9 @@ function reactor_stop()
     end
     minetest.set_node(vector.new(-7,5,26), {name = "moontest:exterior_light_off"})
     minetest.set_node(vector.new(7,5,26), {name = "moontest:exterior_light_off"})
+    if terraformer_on() then
+        terraformer_shutdown()
+    end
 end
 
 --returns true if the power is on, determines sound effects played
