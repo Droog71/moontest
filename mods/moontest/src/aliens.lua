@@ -141,13 +141,7 @@ function alien_step(self, dtime)
         follow_player(self)
     end
       
-    update_state(self)	
-    
-    local node = minetest.get_node(self.object:get_pos()).name
-    if node ~= "air" and string.sub(node, 0, 8) ~= "mesecons" then
-        self.object:remove()
-        alien_count = alien_count - 1
-    end
+    update_state(self)
 end
 
 --simulates gravity
