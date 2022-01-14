@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.4
+    Version: 1.0.5
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -24,6 +24,7 @@ local items_for_sale = {
         ["Fuel"] = "portable_power:fuel",
         ["Work Light"] = "work_lights:work_light_off",
         ["Generator"] = "portable_power:generator",
+        ["Solar Panel"] = "portable_power:solar_panel",
         ["Research Probe"] = "moontest:research_probe",
         ["Robot"] = "lwscratch:robot",
         ["Robot Disk"] = "lwscratch:cassette"
@@ -54,6 +55,7 @@ local item_prices = {
         ["Fuel"] = 8,
         ["Work Light"] = 128,
         ["Generator"] = 2048,
+        ["Solar Panel"] = 2048,
         ["Research Probe"] = 4096,
         ["Robot"] = 1024,
         ["Robot Disk"] = 128
@@ -84,6 +86,7 @@ local research_levels = {
         ["Fuel"] = 1,
         ["Work Light"] = 1,
         ["Generator"] = 1,
+        ["Solar Panel"] = 1,
         ["Research Probe"] = 1,
         ["Robot"] = 2,
         ["Robot Disk"] = 2
@@ -157,7 +160,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 player:set_inventory_formspec(table.concat(formspec, ""))
             elseif key == "->" then
                 if page < 3 then
-                      page = page + 1
+                    page = page + 1
                 else
                     page = 1
                 end
@@ -166,7 +169,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 player:set_inventory_formspec(table.concat(formspec, ""))
             elseif key == "<-" then
                 if page > 1 then
-                      page = page - 1
+                    page = page - 1
                 else
                     page = 3
                 end

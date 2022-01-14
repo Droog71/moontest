@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.4
+    Version: 1.0.5
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -95,7 +95,7 @@ minetest.register_abm({
               local timer = meta:get_int("timer")
               timer = timer + 1
               meta:set_int("timer", timer)
-              if timer == 5 then
+              if timer == 6 then
                   reactor_smoke()
               end
           end

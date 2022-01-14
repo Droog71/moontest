@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.4
+    Version: 1.0.5
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -141,6 +141,7 @@ minetest.register_node("moontest:research_probe", {
     drawtype = 'mesh',
     mesh = "research_probe.obj",
     groups = {dig_immediate=2},
+    paramtype2="facedir",
     on_construct = function(pos)
         table.insert(power_consumers, pos)
         local meta = minetest.get_meta(pos)
@@ -151,6 +152,14 @@ minetest.register_node("moontest:research_probe", {
             "listring[]")
         local inv = meta:get_inventory()
         inv:set_size("main", 4*1)
+    end,
+    after_place_node = function(pos, placer, itemstack, pointed_thing)
+        local name = placer:get_player_name()
+        if inside_habitat(name) then
+            minetest.remove_node(pos)
+            minetest.chat_send_player(name, "You can't use that indoors.")
+            return true
+        end
     end,
     after_dig_node = function(pos, oldnode, oldmetadata, digger)
         for i,p in pairs(power_consumers) do

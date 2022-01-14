@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.4
+    Version: 1.0.5
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -87,6 +87,13 @@ local text_list = {"\n\nYou are a prospector on a newly discovered moon.\n" ..
     "Wire is then ran through a delayer back to the machine. This will restart a machine\n" ..
     "if it fails but will not do so after a power outage.",
     
+    "\n\n\n\nThis circuit is optimized to use as little material as possible.\n" ..
+    "A sensor is placed directly next to the machine.\n" ..
+    "A relay is placed directly next to the sensor.\n" ..
+    "Wire is used to connect the relay to the microcontroller.\n" ..
+    "The microcontroller is directly connected to a delayer and the delayer\n" ..
+    "leads immediately back to the machine without using any wire.",
+    
     "\n\n\n\nThese are reactor boosters. Boosters increase reactor output by 100 each.\n" ..
     "They must be placed within 20 meters of the reactor and cannot be ran continuously.\n" .. 
     "After 10 seconds, they will overload the reactor. When disabled, the booster has a\n" .. 
@@ -127,7 +134,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 local formspec = inventory_formspec(player)
                 player:set_inventory_formspec(table.concat(formspec, ""))
             elseif key == "->" then
-                if index < 15 then
+                if index < 16 then
                       index = index + 1
                 else
                     index = 1
@@ -140,7 +147,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 if index > 1 then
                       index = index - 1
                 else
-                    index = 15
+                    index = 16
                 end
                 text = text_list[index]
                 image = "readme__" .. index .. ".png"

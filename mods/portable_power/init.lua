@@ -16,9 +16,9 @@ minetest.register_craftitem("portable_power:fuel", {
 
 --solar panel
 minetest.register_node("portable_power:solar_panel", {
-  description = "Solar Panel\n" .. "Generates power for research probes and work lights.\n" ..
-      "One power source is needed for every 5 consumers.\n" ..
-      "Must be placed within 10 meters of the consumers.",
+  description = "Solar Panel\n" .. "Generates power for research probes,\n" .. 
+        "REM extractors and work lights.\n" ..
+        "Requires an active terraformer.",
   tiles = {"solar_panel.png"},
   groups = {dig_immediate=2},
   paramtype2="facedir",
@@ -26,6 +26,14 @@ minetest.register_node("portable_power:solar_panel", {
   mesh = "solar_panel.obj",
   wield_image = "solar_panel_wield.png",
   inventory_image = "solar_panel_wield.png",
+  after_place_node = function(pos, placer, itemstack, pointed_thing)
+      local name = placer:get_player_name()
+      if inside_habitat(name) then
+          minetest.remove_node(pos)
+          minetest.chat_send_player(name, "You can't use that indoors.")
+          return true
+      end
+  end,
   after_dig_node = function(pos, oldnode, oldmetadata, digger)
       for i,p in pairs(power_producers) do
           if p.x == pos.x and p.y == pos.y and p.z == pos.z then
@@ -38,14 +46,16 @@ minetest.register_node("portable_power:solar_panel", {
 
 --generator
 minetest.register_node("portable_power:generator", {
-    description = "Generator\n" .. "Generates power for research probes and work lights.\n" ..
+    description = "Generator\n" .. "Generates power for research probes,\n" .. 
+        "REM extractors and work lights.\n" ..
         "One power source is needed for every 5 consumers.\n" ..
         "Must be placed within 10 meters of the consumers.",
-     tiles = {"generator.png"},
-     groups = {dig_immediate=2},
-     drawtype = 'mesh',
-     mesh = "generator.obj",
-     on_construct = function(pos)
+    tiles = {"generator.png"},
+    groups = {dig_immediate=2},
+    paramtype2="facedir",
+    drawtype = 'mesh',
+    mesh = "generator.obj",
+    on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:set_string("formspec",
             "size[8,9]"..
@@ -63,7 +73,17 @@ minetest.register_node("portable_power:generator", {
             end
         end
         local pos_str = pos.x .. "," .. pos.y .. "," .. pos.z
-        minetest.sound_stop(generator_sounds[pos_str])
+        if generator_sounds[pos_str] then
+            minetest.sound_stop(generator_sounds[pos_str])
+        end
+    end,
+    after_place_node = function(pos, placer, itemstack, pointed_thing)
+        local name = placer:get_player_name()
+        if inside_habitat(name) then
+            minetest.remove_node(pos)
+            minetest.chat_send_player(name, "You can't use that indoors.")
+            return true
+        end
     end,
     can_dig = function(pos,player)
         local meta = minetest.get_meta(pos);
@@ -225,8 +245,7 @@ end
 
 --for solar panels
 function blocked(pos)
-    local time = minetest.get_timeofday()
-    if time <= 0.25 or time >= 0.75 then
+    if terraformer_on() == false then
         return true
     end
     for y = pos.y + 1, 100, 1 do

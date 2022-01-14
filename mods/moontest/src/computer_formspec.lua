@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.4
+    Version: 1.0.5
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -22,6 +22,7 @@ function computer_formspec()
     local dp = drill_power > 2000 and 2000 or drill_power
     local gg = generated_gravity > 100 and 100 or generated_gravity
     local sb = stability > 100 and 100 or stability
+    if terraformer_on() then sb = 100 end
     local on_formspec = {
         "size[30,22]",
         "bgcolor[#2d2d2d;false]",

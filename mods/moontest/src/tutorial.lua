@@ -1,6 +1,6 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.4
+    Version: 1.0.5
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
@@ -126,7 +126,7 @@ local tutorial_fs_strings = {
   "Here you can view the result of the current\n" ..
   "drill and coolant pump settings, as well as\n" ..
   "the gravity generator's affect on machine stability.]" ..
-  "image[1.5,4;6,3.375;readme__15.png]" ..
+  "image[1.5,4;6,3.375;readme__16.png]" ..
   "button[3,8;2,0.5;next;Next]",
   
   "size[8,9]" ..
@@ -155,7 +155,7 @@ local tutorial_fs_strings = {
   "by generators and can be helpful when setting up\n" .. 
   "research probes. See the image below for example.\n" .. 
   "Go ahead and try setting up a research probe now.]" ..
-  "image[1.5,6;6,3.375;readme__16.png]" ..
+  "image[1.5,6;6,3.375;readme__17.png]" ..
   "button[3,10;2,0.5;ok;OK]",
   
   "size[8,11]" ..
@@ -188,7 +188,7 @@ local tutorial_fs_strings = {
   "circuits so one group is on while the other is off.\n" ..
   "This way your reactor output has a steady value.\n" ..
   "Go ahead and try setting one of these up now.]" ..
-  "image[1.5,6;6,3.375;readme__14.png]" ..
+  "image[1.5,6;6,3.375;readme__15.png]" ..
   "button[3,10;2,0.5;ok;OK]",
   
   "size[6,4]" ..
@@ -215,6 +215,7 @@ local function restart_game()
     oxygen_output = 100
     drill_speed = 100
     pump_speed = 100
+    tf_work = 0
     generated_gravity = 100
     aggro = 0.3
     research_progress = 1
@@ -332,21 +333,17 @@ local function check_tutorial_conditions(player)
             stack2:set_count(1)
             player:get_inventory():add_item("main", stack2)
             
-            local stack3 = ItemStack("mesecons_switch:mesecon_switch_off")
+            local stack3 = ItemStack("work_lights:work_light_off")
             stack3:set_count(1)
             player:get_inventory():add_item("main", stack3)
             
-            local stack4 = ItemStack("work_lights:work_light_off")
+            local stack4 = ItemStack("work_lights:flashlight")
             stack4:set_count(1)
             player:get_inventory():add_item("main", stack4)
             
-            local stack5 = ItemStack("work_lights:flashlight")
-            stack5:set_count(1)
+            local stack5 = ItemStack("portable_power:fuel")
+            stack5:set_count(10)
             player:get_inventory():add_item("main", stack5)
-            
-            local stack6 = ItemStack("portable_power:fuel")
-            stack6:set_count(10)
-            player:get_inventory():add_item("main", stack6)
             
             hud_img = player:hud_add({
                 hud_elem_type = "image",

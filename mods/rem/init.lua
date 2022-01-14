@@ -20,6 +20,7 @@ minetest.register_node("rem:extractor", {
     drawtype = 'mesh',
     mesh = "extractor.obj",
     groups = {dig_immediate=2},
+    paramtype2="facedir",
     on_construct = function(pos)
         table.insert(power_consumers, pos)
         local meta = minetest.get_meta(pos)
@@ -30,6 +31,14 @@ minetest.register_node("rem:extractor", {
             "listring[]")
         local inv = meta:get_inventory()
         inv:set_size("main", 4*1)
+    end,
+    after_place_node = function(pos, placer, itemstack, pointed_thing)
+        local name = placer:get_player_name()
+        if inside_habitat(name) then
+            minetest.remove_node(pos)
+            minetest.chat_send_player(name, "You can't use that indoors.")
+            return true
+        end
     end,
     after_dig_node = function(pos, oldnode, oldmetadata, digger)
         for i,p in pairs(power_consumers) do
@@ -92,9 +101,9 @@ minetest.register_abm({
     interval = 10,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        local under = vector.new(pos.x, pos.y - 1, pos.z)
-        local node_under = minetest.get_node(under)
-        if node_under.name == "moontest:moon_surface" then
+        local under_pos = vector.new(pos.x, pos.y - 1, pos.z)
+        local node_name = minetest.get_node(under_pos).name
+        if node_name == "moontest:surface" or node_name == "terraformer:grass" then
             local active = is_consumer(pos)
             if active == false then
                 table.insert(power_consumers, pos)

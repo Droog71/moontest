@@ -1,11 +1,11 @@
 --[[
     Moon Habitat Simulator
-    Version: 1.0.4
+    Version: 1.0.5
     License: GNU Affero General Public License version 3 (AGPLv3)
 ]]--
 
 local function do_file(filename)
-	dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. filename .. ".lua")
+    dofile(minetest.get_modpath("moontest") .. DIR_DELIM .. "src" .. DIR_DELIM .. filename .. ".lua")
 end
 
 do_file("nodes")
@@ -29,4 +29,3 @@ do_file("computer_formspec")
 do_file("shop_formspec")
 do_file("sleep_formspec")
 do_file("tutorial")
-
