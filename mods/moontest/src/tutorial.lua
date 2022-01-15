@@ -411,7 +411,7 @@ local function check_tutorial_conditions(player)
                 position = {x = 0.5, y = 0.15},
                 offset = {x = 0, y = 0},
                 scale = {x = 0.25, y = 0.25},
-                text = "readme__14.png"
+                text = "readme__15.png"
             })
         end
     elseif tutorial_step == 15 and tutorial_step_complete == 14 then
