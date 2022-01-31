@@ -18,12 +18,14 @@ local items_for_sale = {
         ["Note Block"] = "mesecons_noteblock:noteblock",
         ["Screw Driver"] = "screwdriver2:screwdriver",
         ["Flashlight"] = "work_lights:flashlight",
-        ["Crate"] = "moontest:crate"
+        ["Crate"] = "moontest:crate",
+        ["Conveyor"] = "conveyors:conveyor"
     },
     {
         ["Fuel"] = "portable_power:fuel",
         ["Work Light"] = "work_lights:work_light_off",
         ["Generator"] = "portable_power:generator",
+        ["Power Transmitter"] = "portable_power:power_transmitter",
         ["Solar Panel"] = "portable_power:solar_panel",
         ["Research Probe"] = "moontest:research_probe",
         ["Robot"] = "lwscratch:robot",
@@ -49,12 +51,14 @@ local item_prices = {
         ["Note Block"] = 16,
         ["Screw Driver"] = 32,
         ["Flashlight"] = 64,
-        ["Crate"] = 64
+        ["Crate"] = 64,
+        ["Conveyor"] = 16
     },
     {
         ["Fuel"] = 8,
         ["Work Light"] = 128,
         ["Generator"] = 2048,
+        ["Power Transmitter"] = 1024,
         ["Solar Panel"] = 2048,
         ["Research Probe"] = 4096,
         ["Robot"] = 1024,
@@ -80,12 +84,14 @@ local research_levels = {
         ["Note Block"] = 1,
         ["Screw Driver"] = 1,
         ["Flashlight"] = 1,
-        ["Crate"] = 1
+        ["Crate"] = 1,
+        ["Conveyor"] = 1
     },
     {
         ["Fuel"] = 1,
         ["Work Light"] = 1,
         ["Generator"] = 1,
+        ["Power Transmitter"] = 1,
         ["Solar Panel"] = 1,
         ["Research Probe"] = 1,
         ["Robot"] = 2,

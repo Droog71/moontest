@@ -104,10 +104,10 @@ minetest.register_abm({
         local under_pos = vector.new(pos.x, pos.y - 1, pos.z)
         local node_name = minetest.get_node(under_pos).name
         if node_name == "moontest:surface" or node_name == "terraformer:grass" then
-            local active = is_consumer(pos)
-            if active == false then
+            if is_consumer(pos) == false then
                 table.insert(power_consumers, pos)
-            elseif power_stable(pos) then
+            elseif power_stable(pos) or power == 1 then
+                minetest.get_meta(pos):set_int("power", 0)
                 local chance = math.random(1,100)
                 if chance >= 50 then
                     local habitat_range = vector.distance(vector.new(0, 0, 0), pos)
@@ -152,6 +152,8 @@ minetest.register_abm({
                     end
                 end
             end
+            local power_disp = (power_stable(pos) or power == 1) and "on" or "off"
+            minetest.get_meta(pos):set_string("infotext", "REM Extractor\n" .. "Power: " .. power_disp)
         end
     end
 })
