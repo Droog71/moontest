@@ -329,19 +329,19 @@ local function check_tutorial_conditions(player)
             stack1:set_count(1)
             player:get_inventory():add_item("main", stack1)
             
-            local stack2 = ItemStack("portable_power:generator")
+            local stack2 = ItemStack("moontest_power:generator")
             stack2:set_count(1)
             player:get_inventory():add_item("main", stack2)
             
-            local stack3 = ItemStack("work_lights:work_light_off")
+            local stack3 = ItemStack("moontest_lights:work_light_off")
             stack3:set_count(1)
             player:get_inventory():add_item("main", stack3)
             
-            local stack4 = ItemStack("work_lights:flashlight")
+            local stack4 = ItemStack("moontest_lights:flashlight")
             stack4:set_count(1)
             player:get_inventory():add_item("main", stack4)
             
-            local stack5 = ItemStack("portable_power:fuel")
+            local stack5 = ItemStack("moontest_power:fuel")
             stack5:set_count(10)
             player:get_inventory():add_item("main", stack5)
             
@@ -369,15 +369,15 @@ local function check_tutorial_conditions(player)
             stack2:set_count(10)
             player:get_inventory():add_item("main", stack2)
             
-            local stack3 = ItemStack("mesecons_delayer:delayer_off_1")
+            local stack3 = ItemStack("moontest_mesecons_delayer:delayer_off_1")
             stack3:set_count(10)
             player:get_inventory():add_item("main", stack3)
             
-            local stack4 = ItemStack("mesecons_microcontroller:microcontroller0000")
+            local stack4 = ItemStack("moontest_mesecons_microcontroller:microcontroller0000")
             stack4:set_count(10)
             player:get_inventory():add_item("main", stack4)
             
-            local stack5 = ItemStack("mesecons:wire_00000000_off")
+            local stack5 = ItemStack("moontest_mesecons:wire_00000000_off")
             stack5:set_count(50)
             player:get_inventory():add_item("main", stack5)
             
@@ -402,7 +402,7 @@ local function check_tutorial_conditions(player)
             stack1:set_count(10)
             player:get_inventory():add_item("main", stack1)
             
-            local stack2 = ItemStack("mesecons_button:button_off")
+            local stack2 = ItemStack("moontest_mese_button:button_off")
             stack2:set_count(10)
             player:get_inventory():add_item("main", stack2)
             

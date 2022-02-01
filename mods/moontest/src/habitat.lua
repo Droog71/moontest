@@ -205,7 +205,7 @@ function build_teleporter()
         minetest.set_node(vector.new(20,y,-5), {name = "moontest:wall"})
         minetest.set_node(vector.new(21,y,-4), {name = "moontest:wall"})
     end
-    minetest.set_node(vector.new(20,0,-4), {name = "mt_teleporter:teleporter"})
-    minetest.set_node(vector.new(20,7,-4), {name = "mt_teleporter:teleporter"})
+    minetest.set_node(vector.new(20,0,-4), {name = "moontest_teleporter:teleporter"})
+    minetest.set_node(vector.new(20,7,-4), {name = "moontest_teleporter:teleporter"})
     minetest.set_node(vector.new(20,11,-4), {name = "moontest:wall"})
 end
