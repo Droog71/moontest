@@ -6,7 +6,7 @@ end
 
 local rotate_function = minetest.registered_chatcommands["/rotate"].func
 
-minetest.register_node("screwdriver2:worldedit_screw",{
+minetest.register_node("moontest_screwdriver:worldedit_screw",{
 	description = "WorldEdit Screw\nRotating this with the screwdriver will also rotate the worldedit region.",
 	tiles = {"default_stone.png^screwdriver2_screw.png"},
 	paramtype2 = "facedir",

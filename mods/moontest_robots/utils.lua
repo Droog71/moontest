@@ -268,134 +268,134 @@ end
 function utils.prep_inventory (inv, program)
 	local ops =
 	{
-		"lwscratch:cmd_act_move_front",
-		"lwscratch:cmd_act_move_back",
-		"lwscratch:cmd_act_move_down",
-		"lwscratch:cmd_act_move_up",
-		"lwscratch:cmd_act_turn_left",
-		"lwscratch:cmd_act_turn_right",
+		"moontest_robots:cmd_act_move_front",
+		"moontest_robots:cmd_act_move_back",
+		"moontest_robots:cmd_act_move_down",
+		"moontest_robots:cmd_act_move_up",
+		"moontest_robots:cmd_act_turn_left",
+		"moontest_robots:cmd_act_turn_right",
 		"",
 		"",
 
-		"lwscratch:cmd_act_dig_front",
-		"lwscratch:cmd_act_dig_front_down",
-		"lwscratch:cmd_act_dig_front_up",
-		"lwscratch:cmd_act_dig_back",
-		"lwscratch:cmd_act_dig_back_down",
-		"lwscratch:cmd_act_dig_back_up",
-		"lwscratch:cmd_act_dig_down",
-		"lwscratch:cmd_act_dig_up",
+		"moontest_robots:cmd_act_dig_front",
+		"moontest_robots:cmd_act_dig_front_down",
+		"moontest_robots:cmd_act_dig_front_up",
+		"moontest_robots:cmd_act_dig_back",
+		"moontest_robots:cmd_act_dig_back_down",
+		"moontest_robots:cmd_act_dig_back_up",
+		"moontest_robots:cmd_act_dig_down",
+		"moontest_robots:cmd_act_dig_up",
 
-		"lwscratch:cmd_act_place_front",
-		"lwscratch:cmd_act_place_front_down",
-		"lwscratch:cmd_act_place_front_up",
-		"lwscratch:cmd_act_place_back",
-		"lwscratch:cmd_act_place_back_down",
-		"lwscratch:cmd_act_place_back_up",
-		"lwscratch:cmd_act_place_down",
-		"lwscratch:cmd_act_place_up",
+		"moontest_robots:cmd_act_place_front",
+		"moontest_robots:cmd_act_place_front_down",
+		"moontest_robots:cmd_act_place_front_up",
+		"moontest_robots:cmd_act_place_back",
+		"moontest_robots:cmd_act_place_back_down",
+		"moontest_robots:cmd_act_place_back_up",
+		"moontest_robots:cmd_act_place_down",
+		"moontest_robots:cmd_act_place_up",
 
-		"lwscratch:cmd_act_pull",
-		"lwscratch:cmd_act_put",
-		"lwscratch:cmd_act_pull_stack",
-		"lwscratch:cmd_act_put_stack",
+		"moontest_robots:cmd_act_pull",
+		"moontest_robots:cmd_act_put",
+		"moontest_robots:cmd_act_pull_stack",
+		"moontest_robots:cmd_act_put_stack",
 		"",
-		"lwscratch:cmd_act_craft",
-		"",
-		"",
-
-		"lwscratch:cmd_act_drop",
-		"lwscratch:cmd_act_trash",
-		"lwscratch:cmd_act_drop_stack",
-		"lwscratch:cmd_act_trash_stack",
-		"",
-		"",
+		"moontest_robots:cmd_act_craft",
 		"",
 		"",
 
-		"lwscratch:cmd_act_value_assign",
-		"lwscratch:cmd_act_value_plus",
-		"lwscratch:cmd_act_value_minus",
-		"lwscratch:cmd_act_value_multiply",
-		"lwscratch:cmd_act_value_divide",
-		"",
-		"",
-		"",
-
-		"lwscratch:cmd_act_stop",
-		"lwscratch:cmd_act_wait",
-		"lwscratch:cmd_act_chat",
-		"",
+		"moontest_robots:cmd_act_drop",
+		"moontest_robots:cmd_act_trash",
+		"moontest_robots:cmd_act_drop_stack",
+		"moontest_robots:cmd_act_trash_stack",
 		"",
 		"",
 		"",
 		"",
 
-		"lwscratch:cmd_value_number",
-		"lwscratch:cmd_value_text",
-		"lwscratch:cmd_value_value",
+		"moontest_robots:cmd_act_value_assign",
+		"moontest_robots:cmd_act_value_plus",
+		"moontest_robots:cmd_act_value_minus",
+		"moontest_robots:cmd_act_value_multiply",
+		"moontest_robots:cmd_act_value_divide",
+		"",
+		"",
+		"",
+
+		"moontest_robots:cmd_act_stop",
+		"moontest_robots:cmd_act_wait",
+		"moontest_robots:cmd_act_chat",
 		"",
 		"",
 		"",
 		"",
 		"",
 
-		"lwscratch:cmd_name_front",
-		"lwscratch:cmd_name_front_down",
-		"lwscratch:cmd_name_front_up",
-		"lwscratch:cmd_name_back",
-		"lwscratch:cmd_name_back_down",
-		"lwscratch:cmd_name_back_up",
-		"lwscratch:cmd_name_down",
-		"lwscratch:cmd_name_up",
-
-		"lwscratch:cmd_stat_if",
-		"lwscratch:cmd_stat_loop",
-		"lwscratch:cmd_op_not",
-		"lwscratch:cmd_op_and",
-		"lwscratch:cmd_op_or",
-		"",
-		"",
-		"",
-
-		"lwscratch:cmd_cond_counter_equal",
-		"lwscratch:cmd_cond_counter_greater",
-		"lwscratch:cmd_cond_counter_less",
-		"lwscratch:cmd_cond_counter_even",
-		"lwscratch:cmd_cond_counter_odd",
-		"",
-		"",
-		"",
-
-		"lwscratch:cmd_cond_value_equal",
-		"lwscratch:cmd_cond_value_greater",
-		"lwscratch:cmd_cond_value_less",
-		"lwscratch:cmd_cond_value_even",
-		"lwscratch:cmd_cond_value_odd",
-		"",
-		"",
-		"",
-
-		"lwscratch:cmd_cond_contains",
-		"lwscratch:cmd_cond_fits",
-		"",
+		"moontest_robots:cmd_value_number",
+		"moontest_robots:cmd_value_text",
+		"moontest_robots:cmd_value_value",
 		"",
 		"",
 		"",
 		"",
 		"",
 
-		"lwscratch:cmd_cond_detect_front",
-		"lwscratch:cmd_cond_detect_front_down",
-		"lwscratch:cmd_cond_detect_front_up",
-		"lwscratch:cmd_cond_detect_back",
-		"lwscratch:cmd_cond_detect_back_down",
-		"lwscratch:cmd_cond_detect_back_up",
-		"lwscratch:cmd_cond_detect_down",
-		"lwscratch:cmd_cond_detect_up",
+		"moontest_robots:cmd_name_front",
+		"moontest_robots:cmd_name_front_down",
+		"moontest_robots:cmd_name_front_up",
+		"moontest_robots:cmd_name_back",
+		"moontest_robots:cmd_name_back_down",
+		"moontest_robots:cmd_name_back_up",
+		"moontest_robots:cmd_name_down",
+		"moontest_robots:cmd_name_up",
 
-		"lwscratch:cmd_line_insert",
-		"lwscratch:cmd_line_remove",
+		"moontest_robots:cmd_stat_if",
+		"moontest_robots:cmd_stat_loop",
+		"moontest_robots:cmd_op_not",
+		"moontest_robots:cmd_op_and",
+		"moontest_robots:cmd_op_or",
+		"",
+		"",
+		"",
+
+		"moontest_robots:cmd_cond_counter_equal",
+		"moontest_robots:cmd_cond_counter_greater",
+		"moontest_robots:cmd_cond_counter_less",
+		"moontest_robots:cmd_cond_counter_even",
+		"moontest_robots:cmd_cond_counter_odd",
+		"",
+		"",
+		"",
+
+		"moontest_robots:cmd_cond_value_equal",
+		"moontest_robots:cmd_cond_value_greater",
+		"moontest_robots:cmd_cond_value_less",
+		"moontest_robots:cmd_cond_value_even",
+		"moontest_robots:cmd_cond_value_odd",
+		"",
+		"",
+		"",
+
+		"moontest_robots:cmd_cond_contains",
+		"moontest_robots:cmd_cond_fits",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+
+		"moontest_robots:cmd_cond_detect_front",
+		"moontest_robots:cmd_cond_detect_front_down",
+		"moontest_robots:cmd_cond_detect_front_up",
+		"moontest_robots:cmd_cond_detect_back",
+		"moontest_robots:cmd_cond_detect_back_down",
+		"moontest_robots:cmd_cond_detect_back_up",
+		"moontest_robots:cmd_cond_detect_down",
+		"moontest_robots:cmd_cond_detect_up",
+
+		"moontest_robots:cmd_line_insert",
+		"moontest_robots:cmd_line_remove",
 		"",
 		"",
 		"",
@@ -450,85 +450,85 @@ end
 
 
 function utils.is_command_item (name)
-	return name:sub (1, 14) == "lwscratch:cmd_"
+	return name:sub (1, 20) == "moontest_robots:cmd_"
 end
 
 
 
 function utils.is_inventory_item (name)
-	return name:len () > 0 and name:sub (1, 14) ~= "lwscratch:cmd_"
+	return name:len () > 0 and name:sub (1, 20) ~= "moontest_robots:cmd_"
 end
 
 
 
 function utils.is_inventory_item_or_blank (name)
-	return name:sub (1, 14) ~= "lwscratch:cmd_"
+	return name:sub (1, 20) ~= "moontest_robots:cmd_"
 end
 
 
 
 function utils.is_condition_item (name)
-	return name:sub (1, 19) == "lwscratch:cmd_cond_"
+	return name:sub (1, 25) == "moontest_robots:cmd_cond_"
 end
 
 
 
 function utils.is_operator_item (name)
-	return name:sub (1, 17) == "lwscratch:cmd_op_"
+	return name:sub (1, 23) == "moontest_robots:cmd_op_"
 end
 
 
 
 function utils.is_action_item (name)
-	return name:sub (1, 18) == "lwscratch:cmd_act_"
+	return name:sub (1, 24) == "moontest_robots:cmd_act_"
 end
 
 
 
 function utils.is_statement_item (name)
-	return name:sub (1, 19) == "lwscratch:cmd_stat_"
+	return name:sub (1, 25) == "moontest_robots:cmd_stat_"
 end
 
 
 
 function utils.is_value_item (name)
-	return name:sub (1, 20) == "lwscratch:cmd_value_"
+	return name:sub (1, 26) == "moontest_robots:cmd_value_"
 end
 
 
 
 function utils.is_number_item (name)
-	return name == "lwscratch:cmd_value_number"
+	return name == "moontest_robots:cmd_value_number"
 end
 
 
 
 function utils.is_text_item (name)
-	return name == "lwscratch:cmd_value_text"
+	return name == "moontest_robots:cmd_value_text"
 end
 
 
 
 function utils.is_variable_item (name)
-	return name == "lwscratch:cmd_value_value"
+	return name == "moontest_robots:cmd_value_value"
 end
 
 
 
 function utils.is_action_value_item (name)
-	return name:sub (1, 24) == "lwscratch:cmd_act_value_"
+	return name:sub (1, 30) == "moontest_robots:cmd_act_value_"
 end
 
 
 
 function utils.is_condition_value_item (name)
-	return name:sub (1, 25) == "lwscratch:cmd_cond_value_"
+	return name:sub (1, 31) == "moontest_robots:cmd_cond_value_"
 end
 
 
 
 function utils.is_name_item (name)
-	return name:sub (1, 19) == "lwscratch:cmd_name_"
+	return name:sub (1, 25) == "moontest_robots:cmd_name_"
 end
 
 
@@ -570,7 +570,7 @@ function utils.robot_stop (pos)
 
 		local node = minetest.get_node_or_nil (pos)
 		if node then
-			node.name = "lwscratch:robot"
+			node.name = "moontest_robots:robot"
 
 			minetest.swap_node (pos, node)
 		end
@@ -614,7 +614,7 @@ function utils.robot_run (pos)
 
 		local node = minetest.get_node_or_nil (pos)
 		if node then
-			node.name = "lwscratch:robot_on"
+			node.name = "moontest_robots:robot_on"
 
 			minetest.swap_node (pos, node)
 		end

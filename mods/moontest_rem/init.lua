@@ -103,7 +103,7 @@ minetest.register_abm({
     action = function(pos, node, active_object_count, active_object_count_wider)
         local under_pos = vector.new(pos.x, pos.y - 1, pos.z)
         local node_name = minetest.get_node(under_pos).name
-        if node_name == "moontest:surface" or node_name == "terraformer:grass" then
+        if node_name == "moontest:moon_surface" or node_name == "moontest_terraformer:grass" then
             if is_consumer(pos) == false then
                 table.insert(power_consumers, pos)
             elseif power_stable(pos) or power == 1 then

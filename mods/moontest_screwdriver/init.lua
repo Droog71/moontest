@@ -28,7 +28,7 @@ if not minetest.global_exists("screwdriver") then
 	}
 end
 
-local get_pointed = dofile(minetest.get_modpath("screwdriver2").."/pointed.lua")
+local get_pointed = dofile(minetest.get_modpath("moontest_screwdriver").."/pointed.lua")
 
 -- Functions to choose rotation based on pointed location
 local insanity_2 = {xy = 1, yz = 1, zx = 1; zy = -1, yx = -1, xz = -1} -- Don't worry about this
@@ -269,7 +269,7 @@ function screwdriver.use(itemstack, player, pointed_thing, is_right_click)
 	end
 end
 
-minetest.register_tool("screwdriver2:screwdriver",{
+minetest.register_tool("moontest_screwdriver:screwdriver",{
 	description = "Better Screwdriver\nleft click = push edge, right click = rotate face",
 	_doc_items_longdesc = "A tool for rotating nodes. Designed to be easier to use than the standard screwdriver.",
 	_doc_items_usagehelp = [[
@@ -290,10 +290,10 @@ if minetest.get_modpath("screwdriver") then
 	minetest.register_craft({
 		output = "screwdriver:screwdriver",
 		type = "shapeless",
-		recipe = {"screwdriver2:screwdriver"},
+		recipe = {"moontest_screwdriver:screwdriver"},
 	})
 	minetest.register_craft({
-		output = "screwdriver2:screwdriver",
+		output = "moontest_screwdriver:screwdriver",
 		type = "shapeless",
 		recipe = {"screwdriver:screwdriver"},
 	})
@@ -308,7 +308,7 @@ end
 
 -- Override screwdriver:screwdriver recipe:
 minetest.register_craft({
-	output = "screwdriver2:screwdriver",
+	output = "moontest_screwdriver:screwdriver",
 	recipe = {
 		{"default:steel_ingot"},
 		{"group:stick"},
@@ -316,5 +316,5 @@ minetest.register_craft({
 })
 
 if minetest.get_modpath("worldedit") then
-	dofile(minetest.get_modpath("screwdriver2").."/worldedit.lua")
+	dofile(minetest.get_modpath("moontest_screwdriver").."/worldedit.lua")
 end
