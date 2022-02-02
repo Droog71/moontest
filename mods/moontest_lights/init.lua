@@ -1,7 +1,6 @@
 --[[
     Work Lights
     Author: Droog71
-    Version: 1.0.0
     License: AGPLv3
 ]]--
 
