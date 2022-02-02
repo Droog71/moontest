@@ -185,10 +185,11 @@ minetest.register_abm({
     interval = 10,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        local active = is_consumer(pos)
-        if active == false then
+        local power = minetest.get_meta(pos):get_int("power")
+        if is_consumer(pos) == false then
             table.insert(power_consumers, pos)
-        elseif power_stable(pos) then
+        elseif power_stable(pos) or power == 1 then
+            minetest.get_meta(pos):set_int("power", 0)
             local chance = math.random(1,100)
             if chance >= 50 then
                 local habitat_range = vector.distance(vector.new(0, 0, 0), pos)
@@ -233,5 +234,7 @@ minetest.register_abm({
                 end
             end
         end
+        local power_disp = (power_stable(pos) or power == 1) and "on" or "off"
+        minetest.get_meta(pos):set_string("infotext", "Research Probe\n" .. "Power: " .. power_disp)
     end
 })

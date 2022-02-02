@@ -10,10 +10,9 @@ function inventory_formspec(player)
         "size[8,7.5]",
         "bgcolor[#2d2d2d;false]",
         "list[current_player;main;0,3.5;8,4;]",
-        "button[1.5,0.75;2,0.5;Tutorial;Tutorial]",
-        "button[1.5,2;2,0.5;Manual;Manual]",
-        "button[4.5,0.75;2,0.5;Shop;Shop]",
-        "button[4.5,2;2,0.5;Power;Power]"
+        "button[1,1.5;2,0.5;Tutorial;Tutorial]",
+        "button[3,1.5;2,0.5;Manual;Manual]",
+        "button[5,1.5;2,0.5;Shop;Shop]",
     }
     return formspec
 end
@@ -39,9 +38,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 player:set_inventory_formspec(table.concat(formspec, ""))
             elseif key == "Tutorial" then
                 start_tutorial(player)
-            elseif key == "Power" then
-                local formspec = power_formspec(player)
-                player:set_inventory_formspec(table.concat(formspec, ""))
             end
         end
     end

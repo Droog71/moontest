@@ -12,32 +12,34 @@ local loaded = false
 
 local items_for_sale = { 
     {
-        ["Wire"] = "mesecons:wire_00000000_off",
-        ["Switch"] = "mesecons_switch:mesecon_switch_off",
-        ["Button"] = "mesecons_button:button_off",
-        ["Note Block"] = "mesecons_noteblock:noteblock",
-        ["Screw Driver"] = "screwdriver2:screwdriver",
-        ["Flashlight"] = "work_lights:flashlight",
-        ["Crate"] = "moontest:crate"
+        ["Wire"] = "moontest_mesecons:wire_00000000_off",
+        ["Switch"] = "moontest_mesecons_switch:mesecon_switch_off",
+        ["Button"] = "moontest_mesecons_button:button_off",
+        ["Note Block"] = "moontest_mesecons_noteblock:noteblock",
+        ["Screw Driver"] = "moontest_screwdriver:screwdriver",
+        ["Flashlight"] = "moontest_lights:flashlight",
+        ["Crate"] = "moontest:crate",
+        ["Conveyor"] = "moontest_conveyors:conveyor"
     },
     {
-        ["Fuel"] = "portable_power:fuel",
-        ["Work Light"] = "work_lights:work_light_off",
-        ["Generator"] = "portable_power:generator",
-        ["Solar Panel"] = "portable_power:solar_panel",
+        ["Fuel"] = "moontest_power:fuel",
+        ["Work Light"] = "moontest_lights:work_light_off",
+        ["Generator"] = "moontest_power:generator",
+        ["Power Transmitter"] = "moontest_power:power_transmitter",
+        ["Solar Panel"] = "moontest_power:solar_panel",
         ["Research Probe"] = "moontest:research_probe",
-        ["Robot"] = "lwscratch:robot",
-        ["Robot Disk"] = "lwscratch:cassette"
+        ["Robot"] = "moontest_robots:robot",
+        ["Robot Disk"] = "moontest_robots:cassette"
     },
     {
-        ["Delayer"] = "mesecons_delayer:delayer_off_1",
-        ["Microcontroller"] = "mesecons_microcontroller:microcontroller0000",
+        ["Delayer"] = "moontest_mesecons_delayer:delayer_off_1",
+        ["Microcontroller"] = "moontest_mesecons_microcontroller:microcontroller0000",
         ["Sensor"] = "moontest:sensor",
         ["Relay"] = "moontest:relay_off",
         ["Reactor Booster"] = "moontest:reactor_booster",
-        ["REM Extractor"] = "rem:extractor",
-        ["REM Rocket"] = "rem:rocket",
-        ["Terraformer"] = "terraformer:terraformer_off"
+        ["REM Extractor"] = "moontest_rem:extractor",
+        ["REM Rocket"] = "moontest_rem:rocket",
+        ["Terraformer"] = "moontest_terraformer:terraformer_off"
     }
 }
 
@@ -49,12 +51,14 @@ local item_prices = {
         ["Note Block"] = 16,
         ["Screw Driver"] = 32,
         ["Flashlight"] = 64,
-        ["Crate"] = 64
+        ["Crate"] = 64,
+        ["Conveyor"] = 16
     },
     {
         ["Fuel"] = 8,
         ["Work Light"] = 128,
         ["Generator"] = 2048,
+        ["Power Transmitter"] = 1024,
         ["Solar Panel"] = 2048,
         ["Research Probe"] = 4096,
         ["Robot"] = 1024,
@@ -80,12 +84,14 @@ local research_levels = {
         ["Note Block"] = 1,
         ["Screw Driver"] = 1,
         ["Flashlight"] = 1,
-        ["Crate"] = 1
+        ["Crate"] = 1,
+        ["Conveyor"] = 1
     },
     {
         ["Fuel"] = 1,
         ["Work Light"] = 1,
         ["Generator"] = 1,
+        ["Power Transmitter"] = 1,
         ["Solar Panel"] = 1,
         ["Research Probe"] = 1,
         ["Robot"] = 2,
