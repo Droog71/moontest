@@ -46,6 +46,7 @@ REM Extractor sound: CC0, https://freesound.org/people/Opticreep/sounds/255401/
 Generator sound: CC0, https://freesound.org/people/alphatone/sounds/561788/
 Terraformer sound: CC BY 3.0, https://freesound.org/people/chelan/sounds/104833/
 Alarm sound: CC0, https://freesound.org/people/imagery2/sounds/458570/
+Power transmitter sound: CC0, https://freesound.org/people/smokinghotdog/sounds/584241/
 
 --Models--
 Reactor model: CC BY-SA 4.0, https://sketchfab.com/3d-models/big-reactor-38f045b46af043a798ca40d96f754e54
