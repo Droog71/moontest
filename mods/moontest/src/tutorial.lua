@@ -146,8 +146,8 @@ local tutorial_fs_strings = {
   "label[1.5,1;" ..
   "Research data can be gathered using\n" ..
   "research probes outside the habitat.\n" ..
-  "A generator with fuel must be placed within 10\n" ..
-  "meters of the probe. The farther probes are\n" .. 
+  "Research probes must be powered by a generator\n" ..
+  "or power transmitter. The farther probes are\n" .. 
   "from the habitat and each other, the more data\n" .. 
   "they will collect. You can monitor all of your\n" ..
   "generators from the power window accessed via\n" .. 
@@ -179,7 +179,7 @@ local tutorial_fs_strings = {
   "label[1.5,1;" ..
   "These are reactor boosters.\n" ..
   "Boosters increase reactor output by 100 each.\n" ..
-  "They must be placed within 20 meters of the reactor.\n" ..
+  "They must be placed within 10 meters of the reactor.\n" ..
   "Boosters cannot be ran continuously.\n" .. 
   "After 10 seconds, they will overload the reactor.\n" ..
   "When disabled, the booster has a 10 second cooldown.\n" ..

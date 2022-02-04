@@ -75,7 +75,7 @@ local text_list = {"\n\nYou are a prospector on a newly discovered moon.\n" ..
     "increase your research level and unlock new items in the shop.\n\n" ..
     "Left click the research station with organic matter or research data to\n" ..
     "process the item. Research data can be gathered using research probes outside of\n" .. 
-    "the habitat. A power source must be placed within 10 meters of the probe.\n" .. 
+    "the habitat. Research probes must be powered by a generator or power transmitter.\n" .. 
     "The farther probes are from the habitat and each other, the more data they will collect.\n\n" .. 
     "You can monitor the status of all your generators in the power window accessed\n" .. 
     "from your inventory. Work lights are also powered by generators and can be helpful when\n" ..
@@ -95,7 +95,7 @@ local text_list = {"\n\nYou are a prospector on a newly discovered moon.\n" ..
     "leads immediately back to the machine without using any wire.",
     
     "\n\n\n\nThese are reactor boosters. Boosters increase reactor output by 100 each.\n" ..
-    "They must be placed within 20 meters of the reactor and cannot be ran continuously.\n" .. 
+    "They must be placed within 10 meters of the reactor and cannot be ran continuously.\n" .. 
     "After 10 seconds, they will overload the reactor. When disabled, the booster has a\n" .. 
     "10 second cooldown. Boosters can be operated by pulsing logic circuits or 'clocks'.\n" ..
     "The best way to configure boosters is to stagger circuits so one group is on while\n" .. 
