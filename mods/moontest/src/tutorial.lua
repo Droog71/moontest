@@ -402,7 +402,7 @@ local function check_tutorial_conditions(player)
             stack1:set_count(10)
             player:get_inventory():add_item("main", stack1)
             
-            local stack2 = ItemStack("moontest_mese_button:button_off")
+            local stack2 = ItemStack("moontest_mesecons_button:button_off")
             stack2:set_count(10)
             player:get_inventory():add_item("main", stack2)
             
